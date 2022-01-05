@@ -16,16 +16,7 @@ export default function Board() {
       <div className="overflow-y-auto w-[89%] absolute top-0 left-0 bottom-0 z-0">
         <ThreadList threads={threads} />
       </div>
-      <div
-        className="flex-grow grid grid-cols-1 grid-rows-2 z-1 transition-transform overflow-hidden items-stretch justify-self-stretch translate-x-[90%]"
-      >
-        <div className="overflow-hidden bg-blue-300">
-          <div className="overflow-y-auto h-full">asdf</div>
-        </div>
-        <div className="overflow-hidden bg-green-300">
-          <div className="overflow-y-auto h-full"><Outlet /></div>
-        </div>
-      </div>
+      <Outlet />
     </div >
 
   )
