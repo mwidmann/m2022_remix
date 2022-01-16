@@ -1,5 +1,6 @@
 module.exports = {
   content: ["./app/**/*.{ts,tsx}"],
+  darkMode: 'class',
   theme: {
   extend: {
       colors: {
@@ -24,7 +25,10 @@ module.exports = {
           'Noto Color Emoji',
         ],
       },
+      dropShadow: {
+        dark: '0 4px 3px rgba(255, 255, 255, 0.15)'
+      }
     },
   },
-  plugins: [require('@tailwindcss/forms'),],
+  plugins: [require('@tailwindcss/forms'),require('@tailwindcss/typography'),],
 }

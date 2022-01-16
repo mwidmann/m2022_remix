@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Inter var';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+    font-named-instance: 'Regular';
+    src: url("/fonts/Inter.variable.woff2?v=3.19") format("woff2");
+  }
+  @font-face {
+    font-family: 'Inter var';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: italic;
+    font-named-instance: 'Italic';
+    src: url("/fonts/Inter.variable.woff2?v=3.19") format("woff2");
+  }
+}
+
+@layer components {
+  .blockquote {
+    @apply inline-block border-l-2 px-2 md:px-4 text-gray-400 my-2;
+  }
+
+
+  .lds-ring {
+    @apply inline-block relative w-full h-full;
+  }
+  .lds-ring div {
+    @apply block absolute w-full h-full border-4 border-transparent border-t-blue-500 dark:border-t-slate-500 rounded-full;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  }
+  .lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
+  }
+  .lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes lds-ring {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  img {
+    @apply inline-block relative overflow-hidden;
+  }
+  img::before {
+    @apply absolute w-full h-full bg-gray-500;
+    content: '';
+  }
+
+  button.action-button {
+    @apply inline-flex items-center justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 space-x-1;
+  }
+
+  button.spoiler-button {
+    @apply inline-flex items-center justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 space-x-1;
+  }
+}

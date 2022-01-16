@@ -1,5 +1,5 @@
 import { JSDOM } from "jsdom"
-import { Message } from '~/types'
+import { ThreadMessage } from '~/types'
 
 const getParents = (elem: Element, document: Document) => {
 
@@ -22,7 +22,7 @@ export async function loader({ params }: { params: { id: number, threadId: numbe
     const threadContent = await threadResponse.text()
     const document = new JSDOM(threadContent).window.document
 
-    const messages: Message[] = []
+    const messages: ThreadMessage[] = []
 
     Array.from(document.querySelectorAll('li')).forEach((li: Element, index) => {
       const title = li.querySelector('a > font')?.textContent ?? ''

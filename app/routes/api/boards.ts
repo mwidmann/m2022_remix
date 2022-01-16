@@ -1,11 +1,25 @@
 import { JSDOM } from 'jsdom'
 import { Board } from '~/types'
+import { user } from '~/cookies/user'
 
-export async function loader() {
+export async function loader({ request }: { request: Request }) {
   try {
-    const boardIndex = await fetch('https://maniac-forum.de/forum/pxmboard.php')
+    const cookieHeader = request.headers.get("Cookie")
+    const userData = await user.parse(cookieHeader) || {}
+    const boardIndex = await fetch('https://maniac-forum.de/forum/pxmboard.php', {
+      headers: userData.cookie ? {
+        'Cookie': userData.cookie
+      } : {}
+    })
     if (!boardIndex || boardIndex === null) throw new Error
     const boardIndexContent = await boardIndex.text()
+
+    const match = boardIndexContent.match(/(\d+) neue private Nachricht\(en\)/m)
+    let pms = undefined
+    if (match) {
+      pms = parseInt(match[1], 10)
+    }
+
     const document = new JSDOM(boardIndexContent).window.document
     const boardsTable = document.querySelectorAll('table table')[2]
     const boardsRows = boardsTable.querySelectorAll('tr.bg2')
@@ -31,7 +45,7 @@ export async function loader() {
           lastPost
         }
       })
-    return boards.filter(board => board.id !== 0)
+    return { boards: boards.filter(board => board.id !== 0), pms }
   } catch (e: any) {
     return new Response(`Error fetching content ` + e.message, {
       status: 500

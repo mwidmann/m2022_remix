@@ -1,7 +1,9 @@
-import { LoaderFunction, Outlet } from "remix"
+import { LoaderFunction, Outlet, useParams } from "remix"
 import { useLoaderData } from "remix"
-import { Thread } from "~/types"
+import { useEffect } from "react"
+import { useLocalStorage } from "~/hooks/useLocalStorage"
 import ThreadList from '~/components/ThreadList'
+import { Thread } from "~/types"
 
 export const loader: LoaderFunction = async ({ params }) => {
   const response = await fetch(`http://localhost:3000/api/board/${params.boardId}`)
@@ -9,15 +11,30 @@ export const loader: LoaderFunction = async ({ params }) => {
 }
 
 export default function Board() {
-  const threads: Thread[] = useLoaderData()
+  const params = useParams()
+  let threads: Thread[] = useLoaderData()
+
+  const [count, setCount] = useLocalStorage<{ [key: number]: number }>(`count_${params.boardId}`, [])
+
+  const updateCount = (thread: Thread) => {
+    setCount({
+      ...count,
+      [thread.id]: thread.messages,
+    })
+  }
 
   return (
-    <div className="overflow-hidden relative flex-grow flex">
-      <div className="overflow-y-auto w-[89%] absolute top-0 left-0 bottom-0 z-0">
-        <ThreadList threads={threads} />
+    <div className="h-full relative md:flex overflow-hidden">
+      {
+        params.threadId
+          ? <Outlet />
+          : <div className="absolute md:relative inset-0 flex-grow w-full order-2 bg-white dark:bg-slate-900"></div>
+      }
+      <div className="absolute md:relative flex-grow flex-shrink-0 top-0 left-0 bottom-0 w-5/6 max-w-5/6 md:w-1/3 md:max-w-1/3 overflow-y-auto order-1">
+        <ThreadList threads={threads} updateCount={updateCount} readMessages={count} />
       </div>
-      <Outlet />
-    </div >
+
+    </div>
 
   )
 }
