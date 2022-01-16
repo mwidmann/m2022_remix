@@ -4,7 +4,7 @@ import { Message } from "~/types"
 import { PointerEvent, useEffect } from "react"
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const response = await fetch(`http://localhost:3000/api/board/${params.boardId}/thread/${params.threadId}/message/${params.messageId}`)
+  const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/board/${params.boardId}/thread/${params.threadId}/message/${params.messageId}`)
   return await response.json()
 }
 

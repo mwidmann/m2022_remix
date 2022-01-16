@@ -3,7 +3,7 @@ import { useState } from "react"
 import { user } from "~/cookies/user"
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const response = await fetch(`http://localhost:3000/api/board/${params.board}/thread/${params.thread}/message/${params.message}/plain`)
+  const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/board/${params.board}/thread/${params.thread}/message/${params.message}/plain`)
   const data = await response.json()
   return data
 }

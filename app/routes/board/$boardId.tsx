@@ -6,7 +6,7 @@ import ThreadList from '~/components/ThreadList'
 import { Thread } from "~/types"
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const response = await fetch(`http://localhost:3000/api/board/${params.boardId}`)
+  const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/board/${params.boardId}`)
   return await response.json()
 }
 

@@ -36,7 +36,7 @@ export async function loader({ request }: { request: Request }): Promise<LoaderD
   darkModeCookie.darkMode !== undefined
   const userData = await user.parse(cookieHeader) || ``
 
-  const response = await fetch('http://localhost:3000/api/boards', {
+  const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/boards`, {
     headers: {
       Cookie: await user.serialize(userData)
     }

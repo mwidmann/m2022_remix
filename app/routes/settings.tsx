@@ -71,7 +71,7 @@ export async function loader({ request }: { request: Request }) {
 
   let userProfile: undefined | { [key: string]: string } = undefined
   if (userData && userData.userid) {
-    const response = await fetch(`http://localhost:3000/api/userprofile/${userData.userid}`)
+    const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/userprofile/${userData.userid}`)
     userProfile = await response.json()
   }
 

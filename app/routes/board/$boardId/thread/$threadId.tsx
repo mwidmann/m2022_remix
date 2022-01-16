@@ -15,7 +15,7 @@ interface SwipeEvent extends Event {
 }
 
 export const loader: LoaderFunction = async ({ params }) => {
-  const response = await fetch(`http://localhost:3000/api/board/${params.boardId}/thread/${params.threadId}`)
+  const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/board/${params.boardId}/thread/${params.threadId}`)
   return await response.json()
 }
 
