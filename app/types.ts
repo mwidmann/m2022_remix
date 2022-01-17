@@ -24,9 +24,12 @@ export type ThreadMessage = {
   date: string
 }
 
-export type Message = {
-  content: string
+export type PlainMessage = {
   title: string
+  content: string
+}
+
+export type Message = PlainMessage & {
   author: string
   authorId: number
   date: string
@@ -44,4 +47,13 @@ export type AppState = {
   currentUser: undefined | UserData
   setCurrentUser: (user: undefined | UserData) => void
   pms: undefined | number
+}
+
+export type BoardsResponse = {
+  boards: Board[]
+  pms: undefined | number
+}
+
+export type UserProfileResponse = {
+  [key: string]: string
 }
