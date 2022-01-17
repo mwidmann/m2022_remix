@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "remix-app-template",
+  "name": "m2022_remix",
   "description": "",
   "license": "",
   "scripts": {
@@ -18,7 +18,8 @@
     "jsdom": "^19.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "remix": "^1.1.1"
+    "remix": "^1.1.1",
+    "@remix-run/vercel": "^1.1.1"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.1.1",
