@@ -7,7 +7,7 @@ import {
   Scripts,
   useLoaderData,
 } from "remix";
-import type { MetaFunction } from "remix";
+import type { MetaFunction, LoaderFunction } from "remix";
 import { useRef, useEffect, useState } from "react";
 import styles from "./tailwind.css";
 import { darkMode } from "./cookies/darkMode";
@@ -15,6 +15,7 @@ import { user } from "./cookies/user";
 import { AppContext } from "./context/AppContext";
 import { Board, UserData } from '~/types'
 import Header from '~/components/Header'
+import { fetchBoards } from "./api";
 
 export function links() {
   return [{ rel: "stylesheet", href: styles }];
@@ -30,24 +31,19 @@ type LoaderData = {
   userData: undefined | UserData
 }
 
-export async function loader({ request }: { request: Request }): Promise<LoaderData> {
-  const cookieHeader = request.headers.get("Cookie")
+export const loader: LoaderFunction = async (context): Promise<LoaderData> => {
+  const cookieHeader = context.request.headers.get("Cookie")
   const darkModeCookie = await darkMode.parse(cookieHeader) || {}
   darkModeCookie.darkMode !== undefined
   const userData = await user.parse(cookieHeader) || ``
-
-  const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/boards`, {
-    headers: {
-      Cookie: await user.serialize(userData)
-    }
-  })
-  const data = await response.json()
+  const data = await fetchBoards(context)
 
   return {
     darkMode: darkModeCookie?.darkMode !== undefined ? darkModeCookie.darkMode : undefined,
     data,
     userData
   }
+
 }
 
 export default function App() {

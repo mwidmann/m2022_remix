@@ -1,11 +1,11 @@
 import { Link, LoaderFunction } from "remix"
 import { useLoaderData, useParams, useNavigate } from "remix"
 import { Message } from "~/types"
-import { PointerEvent, useEffect } from "react"
+import { useEffect } from "react"
+import { fetchMessage } from "~/api"
 
-export const loader: LoaderFunction = async ({ params }) => {
-  const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/board/${params.boardId}/thread/${params.threadId}/message/${params.messageId}`)
-  return await response.json()
+export const loader: LoaderFunction = async (context): Promise<Message | Response> => {
+  return await fetchMessage(context)
 }
 
 export default function MessageDetail() {

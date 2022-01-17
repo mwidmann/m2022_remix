@@ -1,11 +1,10 @@
 import { ActionFunction, Form, Link, LoaderFunction, useActionData, useLoaderData, useParams } from "remix"
 import { useState } from "react"
 import { user } from "~/cookies/user"
+import { fetchMessagePlain } from "~/api"
 
-export const loader: LoaderFunction = async ({ params }) => {
-  const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/board/${params.board}/thread/${params.thread}/message/${params.message}/plain`)
-  const data = await response.json()
-  return data
+export const loader: LoaderFunction = async (context) => {
+  return await fetchMessagePlain(context)
 }
 
 export const action: ActionFunction = async ({ request, params }) => {

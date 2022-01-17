@@ -1,10 +1,12 @@
 import { LoaderFunction, useLoaderData } from "remix"
 import UserProfile from "~/components/UserProfile"
+import * as cheerio from 'cheerio'
+import { fetchUserProfile } from '~/api'
 
-export const loader: LoaderFunction = async ({ params }) => {
-  const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/userprofile/${params.id}`)
-  return await response.json()
+export const loader: LoaderFunction = async (args) => {
+  return await fetchUserProfile(args)
 }
+
 export default function UserProfilePage() {
   const userData = useLoaderData()
   return (

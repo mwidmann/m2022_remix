@@ -2,6 +2,7 @@ import { LoaderFunction, Outlet, useNavigate, useLoaderData, useParams, useTrans
 import { ThreadMessage } from '~/types'
 import SingleMessage from "~/components/SingleMessage"
 import { useEffect, useRef } from "react"
+import { fetchMessages } from '~/api'
 
 interface SwipeEvent extends Event {
   detail: {
@@ -14,9 +15,8 @@ interface SwipeEvent extends Event {
   }
 }
 
-export const loader: LoaderFunction = async ({ params }) => {
-  const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/board/${params.boardId}/thread/${params.threadId}`)
-  return await response.json()
+export const loader: LoaderFunction = async (context): Promise<ThreadMessage[] | Response> => {
+  return await fetchMessages(context)
 }
 
 export default function MessagesList() {
