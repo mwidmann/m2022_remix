@@ -1,10 +1,9 @@
 import * as cheerio from 'cheerio'
 import { LoaderFunction } from 'remix'
-import { UserProfileResponse } from '~/types'
+import { UserProfile } from '~/types'
 
-export const fetchUserProfile: LoaderFunction = async ({ params }): Promise<UserProfileResponse | Response> => {
+export const fetchUserProfileById = async (id: string): Promise<UserProfile | Response> => {
   try {
-    const id = params.id
     console.time(`content`)
     const response = await fetch(`https://maniac-forum.de/forum/pxmboard.php?mode=userprofile&brdid=&usrid=${id}`)
     const data = await response.text()
@@ -30,4 +29,10 @@ export const fetchUserProfile: LoaderFunction = async ({ params }): Promise<User
       status: 500
     })
   }
+}
+
+export const fetchUserProfile: LoaderFunction = async ({ params }): Promise<UserProfile | Response> => {
+  const id = params.id ?? ''
+  return await fetchUserProfileById(id)
+
 }

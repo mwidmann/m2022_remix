@@ -1,10 +1,12 @@
 import { AppContext } from "~/context/AppContext"
 import { useContext, useState, useEffect, useRef } from "react"
 import { Switch } from '@headlessui/react'
-import { Form, useSubmit, redirect, useLoaderData, useActionData } from "remix"
+import { Form, useSubmit, redirect, useLoaderData, useActionData, LoaderFunction } from "remix"
 import { darkMode } from "~/cookies/darkMode"
 import { user } from "~/cookies/user"
 import CurrentUser from "~/components/CurrentUser"
+import { fetchUserProfileById } from "~/api"
+import { UserProfile } from "~/types"
 
 export async function action({ request }: { request: Request }) {
   const form = await request.formData()
@@ -65,14 +67,14 @@ export async function action({ request }: { request: Request }) {
   return null
 }
 
-export async function loader({ request }: { request: Request }) {
-  const cookieHeader = request.headers.get("Cookie")
+export const loader: LoaderFunction = async (context) => {
+  // export async function loader({ request }: { request: Request }) {
+  const cookieHeader = context.request.headers.get("Cookie")
   const userData = await user.parse(cookieHeader) || undefined
 
-  let userProfile: undefined | { [key: string]: string } = undefined
+  let userProfile: undefined | UserProfile = undefined
   if (userData && userData.userid) {
-    const response = await fetch(`${process.env.LOCAL_SERVER ?? `http://localhost:3000`}/api/userprofile/${userData.userid}`)
-    userProfile = await response.json()
+    userProfile = await fetchUserProfileById(userData.userid) as UserProfile
   }
 
   return { userData, userProfile }
