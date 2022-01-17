@@ -54,6 +54,6 @@ export type BoardsResponse = {
   pms: undefined | number
 }
 
-export type UserProfileResponse = {
+export type UserProfile = {
   [key: string]: string
 }
