@@ -52,10 +52,10 @@ export default function MessageDetail() {
 
   const authorId = message.authorId
   return (
-    <div className="p-2 pb-10 max-w-sm overflow-x-hidden md:max-w-lg prose prose-sm md:prose-base dark:prose-invert">
-      <div className="flex justify-between items-center w-full bg-slate-100 dark:bg-slate-700 p-2 shadow">
-        <Link to={`/userprofile/${authorId}`} className="flex items-center space-x-2 no-underline">
-          <img className="overflow-hidden bg-gray-500 m-0 rounded-full ring-2 ring-gray-500 dark:ring-gray-300 w-8 h-8 object-cover" src={`https://maniac-forum.de/forum/images/profile/${authorId - authorId % 100}/${authorId}.jpg`} />
+    <div className="p-2 pb-10 w-full overflow-x-hidden md:max-w-xl">
+      <div className="flex justify-between items-center w-full bg-slate-100 dark:bg-slate-700 p-2 shadow rounded">
+        <Link to={`/userprofile/${authorId}`} className="flex items-center space-x-2 no-underline text-gray-900 dark:text-gray-100">
+          <img className="overflow-hidden bg-gray-500 rounded-full ring-2 ring-gray-500 dark:ring-gray-300 w-8 h-8 object-cover" src={`https://maniac-forum.de/forum/images/profile/${authorId - authorId % 100}/${authorId}.jpg`} />
           <div>
             <div className="font-medium">{message.author}</div>
             <div className="text-xs">{message.date}</div>
@@ -70,8 +70,10 @@ export default function MessageDetail() {
           </button>
         </div>
       </div>
-      <h3 className="font-semibold">{message.title}</h3>
-      <div className="mt-4" dangerouslySetInnerHTML={{ __html: message.content }} />
+      <div className="prose prose-sm md:prose-base dark:prose-invert mt-4">
+        <h3 className="font-semibold">{message.title}</h3>
+        <div className="mt-4" dangerouslySetInnerHTML={{ __html: message.content }} />
+      </div>
     </div >
   )
 }
