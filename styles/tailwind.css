@@ -23,9 +23,8 @@
 
 @layer components {
   .blockquote {
-    @apply inline-block border-l-2 px-2 md:px-4 text-gray-400 my-2;
+    @apply block border-l-2  px-2 md:px-4 text-gray-400 my-2;
   }
-
 
   .lds-ring {
     @apply inline-block relative w-full h-full;
