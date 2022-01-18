@@ -22,8 +22,8 @@ export const action: ActionFunction = async ({ request, params }) => {
     `subject=${encodeURIComponent(formData.get('title') as string)}`,
     `body=${encodeURIComponent(formData.get(`body`) as string)}`,
     `mode=messagesave`,
-    `brdid=${params.board}`,
-    `msgid=${params.message}`,
+    `brdid=${params.boardId}`,
+    `msgid=${params.messageId}`,
     `notification=1`
   ]
 
