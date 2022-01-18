@@ -79,7 +79,7 @@ export default function Reply() {
         </Form> :
         <div className="p-2 md:p-4">
           Vielen Dank für deinen Beitrag.
-          <Link to={`/board/${params.board}/thread/${params.thread}/message/${actionData.message}`}>Zum Beitrag.</Link>
+          <Link to={`/board/${params.boardId}/thread/${params.threadId}/message/${actionData.msgid}`}>Zum Beitrag.</Link>
         </div>
       }
     </div>
