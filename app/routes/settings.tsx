@@ -99,7 +99,7 @@ export default function SettingsIndex() {
   }
 
   return (
-    <div className="bg-white text-gray-900 dark:bg-slate-900 dark:text-gray-100 h-full overflow-hidden p-2 lg:px-4 overflow-y-auto">
+    <div className="text-gray-900 dark:text-gray-100 h-full overflow-hidden p-2 lg:px-4 overflow-y-auto">
       {context.currentUser ?
         <CurrentUser user={{ ...userProfile, ...context.currentUser }} />
         :

@@ -14,6 +14,7 @@ export type Thread = {
   messages: number,
   isFixed?: boolean
   hasNewMessages?: boolean
+  lastReply?: string
 }
 
 export type ThreadMessage = {

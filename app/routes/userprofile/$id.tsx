@@ -10,7 +10,7 @@ export const loader: LoaderFunction = async (args) => {
 export default function UserProfilePage() {
   const userData = useLoaderData()
   return (
-    <div className="bg-white text-gray-900 dark:bg-slate-900 dark:text-gray-100 h-full overflow-hidden p-2 lg:px-4 overflow-y-auto">
+    <div className="h-full overflow-hidden p-2 lg:px-4 overflow-y-auto">
       <UserProfile userProfile={userData} />
     </div>
   )

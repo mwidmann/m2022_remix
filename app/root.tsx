@@ -71,7 +71,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body ref={body} className={`antialiased ${useDarkMode ? `dark` : ``}`}>
+      <body ref={body} className={`antialiased ${useDarkMode ? `dark bg-slate-900 text-gray-100` : `bg-gray-50/50 text-slate-900`}`}>
         <AppContext.Provider value={{ darkMode: useDarkMode, setUseDarkMode, currentUser, setCurrentUser, pms: data.pms }}>
           <div className="flex w-screen h-screen flex-col">
             <div className="flex-grow-0 flex-shrink-0">
