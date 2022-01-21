@@ -81,7 +81,8 @@ export default function MessagesList() {
       </div>
       <div className="
         flex-grow-0 flex-shrink-0 h-1/2 overflow-y-auto overflow-x-hidden
-        xl:h-full xl:w-1/2 xl:border-r
+        xl:h-full xl:w-1/2 xl:border-r order-2
+        xl:order-1
         2xl:w-1/3
         "
         ref={listRef}
