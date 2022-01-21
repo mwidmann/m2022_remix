@@ -58,7 +58,7 @@ export default function MessageDetail() {
 
   const authorId = message.authorId
   return (
-    <div className="p-2 pb-10 w-full overflow-x-hidden md:max-w-xl" ref={messageRef}>
+    <div className="p-2 pb-10 w-full overflow-x-hidden md:max-w-xl lg:max-w-none lg:w-full" ref={messageRef}>
       <div className="flex justify-between items-center w-full bg-slate-100 dark:bg-slate-700 p-2 shadow rounded">
         <Link to={`/userprofile/${authorId}`} className="flex items-center space-x-2 no-underline text-gray-900 dark:text-gray-100">
           <img className="overflow-hidden bg-gray-500 rounded-full ring-2 ring-gray-500 dark:ring-gray-300 w-8 h-8 object-cover" src={`https://maniac-forum.de/forum/images/profile/${authorId - authorId % 100}/${authorId}.jpg`} />

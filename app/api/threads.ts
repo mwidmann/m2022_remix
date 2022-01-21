@@ -28,7 +28,8 @@ export const fetchThreads: LoaderFunction = async ({ params }): Promise<Thread[]
         id,
         author: '',
         date: '',
-        messages: 0
+        messages: 0,
+        lastReply: '',
       })
     })
 
@@ -38,10 +39,14 @@ export const fetchThreads: LoaderFunction = async ({ params }): Promise<Thread[]
       t.author = $f.find('span').text().trim()
       $f.find('b').remove()
       let foundDate = $f.text()
-      const m = [...foundDate.matchAll(/^\s+am\s+(\d{2}.\d{2}.\d{2} \d{2}:\d{2})\s+\(\s+Antworten: (\d+)/gm)]
-
+      let m = [...foundDate.matchAll(/^\s+am\s+(\d{2}.\d{2}.\d{2} \d{2}:\d{2})\s+\(\s+Antworten: (\d+)/gm)]
       t.date = m[0][1]
       t.messages = parseInt(m[0][2])
+      m = [...foundDate.matchAll(/Letzte:\s+(\d{2}.\d{2}.\d{2} \d{2}:\d{2})/gm)]
+      if (m.length > 0) {
+        t.lastReply = m[0][1]
+      }
+
     })
 
     $threadList.find('> img').each((index, img) => {

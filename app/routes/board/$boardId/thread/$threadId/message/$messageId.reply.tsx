@@ -71,7 +71,7 @@ export default function Reply() {
   const title = data.title.startsWith(`Re:`) ? data.title : `Re: ${data.title}`
   const body = wantsToCite ? `>` + data.content.trim().replace(/\n/g, "\n>").replace(/&gt;/g, ">") : ``
 
-  return <div className="bg-white text-gray-900 dark:bg-slate-900 dark:text-gray-100 h-full overflow-hidden p-2 lg:px-4">
+  return <div className="text-gray-900 dark:text-gray-100 h-full overflow-hidden p-2 lg:px-4">
     <div className="border border-gray-500 dark:border-gray-300 rounded-lg h-full">
       {!actionData || actionData.success === false ?
         <Form method="post" className="h-full max-h-96 flex flex-col py-2">
