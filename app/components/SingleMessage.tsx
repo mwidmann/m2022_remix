@@ -8,7 +8,7 @@ export default function SingleMessage({ message }: { message: ThreadMessage }) {
   const transition = useTransition()
   const { messageId } = useParams()
   const indentation = {
-    marginLeft: `${message.hierarchy}rem`,
+    marginLeft: `${message.hierarchy - 1 + 0.5}rem`,
   }
 
   const currentMessage = parseInt(messageId ?? '0')

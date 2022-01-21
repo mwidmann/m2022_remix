@@ -26,6 +26,7 @@ export default function MessagesList() {
   const messages: ThreadMessage[] = useLoaderData()
   const navigate = useNavigate()
   const ref = useRef<HTMLDivElement>(null)
+  const listRef = useRef<HTMLDivElement>(null)
 
 
   useEffect(() => {
@@ -50,16 +51,20 @@ export default function MessagesList() {
   }, [ref.current])
 
   useEffect(() => {
+    listRef.current?.scrollTo(0, 0)
+  }, [params.threadId])
+
+  useEffect(() => {
     if (ref.current)
       ref.current.style.transform = "translateX(0)"
   }, [transition.state])
 
   return (
     <div className="absolute bg-white dark:bg-slate-900 md:relative inset-0 flex flex-col flex-grow w-full select-none z-10 transition-transform duration-300 drop-shadow-lg dark:drop-shadow-dark order-2" ref={ref}>
-      <div className="flex-grow-0 flex-shrink-0 h-1/2 overflow-y-auto overflow-x-hidden border-b border-b-gray-800">
+      <div className="flex-grow-0 flex-shrink-0 h-1/2 overflow-y-auto overflow-hidden border-b border-b-gray-800">
         <Outlet />
       </div>
-      <div className="flex-grow-0 flex-shrink-0 h-1/2 overflow-y-auto overflow-x-hidden">
+      <div className="flex-grow-0 flex-shrink-0 h-1/2 overflow-y-auto overflow-x-hidden" ref={listRef}>
         {messages.map(message => (<SingleMessage message={message} key={message.id} />))}
       </div>
     </div>

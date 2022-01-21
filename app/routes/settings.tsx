@@ -68,7 +68,6 @@ export async function action({ request }: { request: Request }) {
 }
 
 export const loader: LoaderFunction = async (context) => {
-  // export async function loader({ request }: { request: Request }) {
   const cookieHeader = context.request.headers.get("Cookie")
   const userData = await user.parse(cookieHeader) || undefined
 
@@ -79,6 +78,7 @@ export const loader: LoaderFunction = async (context) => {
 
   return { userData, userProfile }
 }
+
 
 export default function SettingsIndex() {
   const darkModeForm = useRef<HTMLFormElement>(null)
@@ -100,8 +100,6 @@ export default function SettingsIndex() {
 
   return (
     <div className="bg-white text-gray-900 dark:bg-slate-900 dark:text-gray-100 h-full overflow-hidden p-2 lg:px-4 overflow-y-auto">
-      {/* <pre>{JSON.stringify(context.currentUser, null, 2)}</pre> */}
-
       {context.currentUser ?
         <CurrentUser user={{ ...userProfile, ...context.currentUser }} />
         :
