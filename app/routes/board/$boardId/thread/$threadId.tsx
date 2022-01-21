@@ -59,8 +59,8 @@ export default function MessagesList() {
 
   return (
     <div className="
-      absolute inset-0 flex flex-col flex-grow w-full select-none z-10 transition-transform duration-300 drop-shadow-lg order-2
-      dark:drop-shadow-dark
+      absolute inset-0 flex flex-col flex-grow w-full select-none z-10 transition-transform duration-300 drop-shadow-lg order-2 bg-slate-50/50
+      dark:drop-shadow-dark dark:bg-slate-900
       md:relative
       xl:flex-row
       "
