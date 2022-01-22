@@ -13,7 +13,7 @@ export default function SingleMessage({ message }: { message: ThreadMessage }) {
 
   const currentMessage = parseInt(messageId ?? '0')
   const isLoading = transition.state === 'loading' && transition.location?.pathname?.endsWith(`message/${message.id}`)
-  const isCurrentClass = isLoading || currentMessage === message.id ? `bg-blue-200 shadow-md` : ``
+  const isCurrentClass = isLoading || currentMessage === message.id ? `bg-blue-200 dark:bg-slate-600 dark:text-gray-100 shadow-md` : ``
   const isCurrentUserClass = context.currentUser?.username === message.author ? `border-red-500` : `border-transparent`
 
   return (
