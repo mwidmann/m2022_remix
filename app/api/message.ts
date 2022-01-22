@@ -35,7 +35,6 @@ const renderNestedBlockquotes = (str: string): string => {
     let match = line.match(/^(&gt;)*/)
     if (match !== null) {
       const currentNestingLevel = match[0].length / 4
-      console.log(currentNestingLevel)
       if (currentNestingLevel > nestingLevel) {
         for (let i = nestingLevel; i < currentNestingLevel; i++) {
           nestedBlockquotes += `<div class="blockquote">`
@@ -43,7 +42,7 @@ const renderNestedBlockquotes = (str: string): string => {
         nestingLevel = currentNestingLevel
       }
 
-      nestedBlockquotes += line.replace(match[0], '').replace(`<br>`, '')
+      nestedBlockquotes += line.replace(match[0], '')
 
       if (currentNestingLevel < nestingLevel) {
         for (let i = nestingLevel; i > currentNestingLevel; i--) {
@@ -57,7 +56,6 @@ const renderNestedBlockquotes = (str: string): string => {
     nestedBlockquotes += `</div>`
   }
 
-  console.log(nestedBlockquotes)
   return nestedBlockquotes
 }
 
@@ -123,6 +121,7 @@ export const fetchMessage: LoaderFunction = async ({ params }): Promise<Message 
 
     $contentEl.find(`font[color='808080']`).each((_, bq) => {
       const $bq = $(bq)
+      console.log($bq.html())
       content = content.replace($bq.prop(`outerHTML`) ?? '', renderNestedBlockquotes($bq.html() ?? ''))
     })
 
