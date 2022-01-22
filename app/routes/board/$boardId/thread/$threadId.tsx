@@ -1,9 +1,9 @@
-import { LoaderFunction, Outlet, useNavigate, useLoaderData, useParams, useTransition } from "remix"
+import { LoaderFunction, Outlet, useNavigate, useLoaderData, useParams, useTransition, useOutletContext } from "remix"
 import { ThreadMessage } from '~/types'
 import SingleMessage from "~/components/SingleMessage"
 import { useEffect, useRef } from "react"
 import { fetchMessages } from '~/api'
-import { useLocalStorage } from "~/hooks/useLocalStorage"
+import { useThreadMessageCount } from '~/routes/board/$boardId'
 
 interface SwipeEvent extends Event {
   detail: {
@@ -27,8 +27,7 @@ export default function MessagesList() {
   const messages: ThreadMessage[] = useLoaderData()
   const ref = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
-
-  const [count, setCount] = useLocalStorage<{ [key: number]: number }>(`count_${params.boardId}`, [])
+  const { setCount } = useThreadMessageCount();
 
   useEffect(() => {
     const handler = function (e: Event) {
@@ -43,10 +42,10 @@ export default function MessagesList() {
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0)
-    setCount({
-      ...count,
+    setCount(oldCount => ({
+      ...oldCount,
       [`${params.threadId}`]: messages.length - 1,
-    })
+    }))
   }, [params.threadId])
 
   useEffect(() => {
