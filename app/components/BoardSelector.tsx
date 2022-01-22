@@ -31,10 +31,10 @@ export default function BoardSelector({ boards, currentBoard }: { boards: Board[
       <ul className={`absolute lg:relative z-20 mt-1 w-full lg:flex lg:space-x-4 items-end bg-white dark:bg-slate-900 lg:bg-transparent shadow-lg lg:shadow-none max-h-56 rounded-md py-1 ring-1 ring-black lg:ring-0 dark:ring-gray-300 ring-opacity-5 overflow-auto focus:outline-none text-xs md:text-sm transition-opacity duration-300 ${showList ? `opacity-100 pointer-events-auto` : `opacity-0 pointer-events-none lg:opacity-100 lg:pointer-events-auto`}`} role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3">
         {boards.map(board => (
           <li className={
-            `text-gray-900 dark:text-gray-300 lg:text-gray-100 dark:lg:text-gray-300 cursor-default select-none relative py-2 pl-3 pr-9 hover:bg-blue-200 hover:text-blue-900 lg:hover:bg-gray-700 lg:hover:text-gray-100 lg:px-3 lg:rounded-md ${board.id === currentBoard ? `lg:bg-slate-700 lg:shadow-md` : ``}`
+            `text-gray-900 dark:text-gray-300 lg:text-gray-100 dark:lg:text-gray-300 cursor-default select-none relative hover:bg-blue-200 hover:text-blue-900 lg:hover:bg-gray-700 lg:hover:text-gray-100 lg:rounded-md ${board.id === currentBoard ? `lg:bg-slate-700 lg:shadow-md` : ``}`
           }
             id="listbox-option-0" role="option" key={board.id}>
-            <Link to={`/board/${board.id}`} onClick={() => setShowList(false)}>
+            <Link to={`/board/${board.id}`} onClick={() => setShowList(false)} className="block py-2 pl-3 pr-9 lg:px-3">
               <div className="flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 lg:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z" />
