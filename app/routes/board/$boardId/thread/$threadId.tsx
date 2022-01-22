@@ -32,9 +32,6 @@ export default function MessagesList() {
 
   useEffect(() => {
     const handler = function (e: Event) {
-      console.log(e.target); // element that was swiped
-      console.log((e as SwipeEvent).detail); // see event data below
-
       if (ref.current !== null) {
         ref.current.style.transform = "translateX(83.33333333%)"
       }
