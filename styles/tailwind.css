@@ -26,6 +26,10 @@
     @apply block border-l-2  px-2 md:px-4 text-gray-400 my-2;
   }
 
+  .blockquote + br {
+    @apply hidden;
+  }
+
   .lds-ring {
     @apply inline-block relative w-full h-full;
   }
