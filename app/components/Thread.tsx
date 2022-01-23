@@ -13,7 +13,7 @@ export default function SingleThread({ thread, hasNewMessages, currentThread }: 
           <div className="flex justify-between">
             <p className="text-sm md:text-base font-semibold">{thread.title}</p>
           </div>
-          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-300 w-full">
+          <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-300 w-full">
             <div>von <span className="font-semibold font-sm">{thread.author}</span>, zuletzt: {thread.lastReply || thread.date}</div>
             {typeof document !== "undefined" && <ThreadCount hasNewMessages={hasNewMessages} count={thread.messages} />}
           </div>
