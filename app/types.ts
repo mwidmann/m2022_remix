@@ -11,7 +11,7 @@ export type Thread = {
   id: number
   author: string
   date: string
-  messages: number,
+  messages: number
   isFixed?: boolean
   hasNewMessages?: boolean
   lastReply?: string
@@ -38,10 +38,11 @@ export type Message = PlainMessage & {
 }
 
 export type UserData = {
-  username: string,
-  userid: number,
+  username: string
+  userid: number
   cookie: string
 }
+
 export type AppState = {
   darkMode: boolean
   setUseDarkMode: (v: boolean) => void

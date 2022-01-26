@@ -1,7 +1,5 @@
-import { Outlet } from 'remix';
+import { Outlet } from 'remix'
 
 export default function Board() {
-  return (
-    <Outlet />
-  );
+  return <Outlet />
 }

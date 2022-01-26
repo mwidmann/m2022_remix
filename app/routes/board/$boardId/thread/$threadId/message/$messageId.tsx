@@ -1,10 +1,12 @@
-import { ErrorBoundaryComponent, Link, LoaderFunction } from "remix"
-import { useLoaderData, useParams, useNavigate } from "remix"
-import { Message } from "~/types"
-import { useEffect, useRef } from "react"
-import { fetchMessage } from "~/api"
+import { ErrorBoundaryComponent, Link, LoaderFunction } from 'remix'
+import { useLoaderData, useParams, useNavigate } from 'remix'
+import { Message } from '~/types'
+import { useEffect, useRef } from 'react'
+import { fetchMessage } from '~/api'
 
-export const loader: LoaderFunction = async (context): Promise<Message | Response> => {
+export const loader: LoaderFunction = async (
+  context
+): Promise<Message | Response> => {
   return await fetchMessage(context)
 }
 
@@ -27,15 +29,16 @@ export default function MessageDetail() {
 
   useEffect(() => {
     const spoiler = (e: Event) => {
-      const spoiler = (e.target as HTMLButtonElement).nextElementSibling as HTMLSpanElement
+      const spoiler = (e.target as HTMLButtonElement)
+        .nextElementSibling as HTMLSpanElement
       if (spoiler) {
-        spoiler.style.display = spoiler.style.display === 'none' ? 'inline' : 'none'
+        spoiler.style.display =
+          spoiler.style.display === 'none' ? 'inline' : 'none'
       }
-
     }
 
     const spoilerList: HTMLButtonElement[] = []
-    Array.from(document.querySelectorAll(`.spoiler_btn`)).forEach(s => {
+    Array.from(document.querySelectorAll(`.spoiler_btn`)).forEach((s) => {
       const newSpoilerButton = document.createElement(`button`)
       newSpoilerButton.classList.add(`spoiler-button`)
       newSpoilerButton.innerHTML = `
@@ -49,7 +52,7 @@ export default function MessageDetail() {
       spoilerList.push(newSpoilerButton)
 
       return () => {
-        spoilerList.forEach(b => {
+        spoilerList.forEach((b) => {
           b.removeEventListener(`click`, spoiler)
         })
       }
@@ -58,10 +61,21 @@ export default function MessageDetail() {
 
   const authorId = message.authorId
   return (
-    <div className="p-2 pb-10 w-full overflow-x-hidden md:max-w-xl lg:max-w-none lg:w-full" ref={messageRef}>
-      <div className="flex justify-between items-center w-full bg-slate-100 dark:bg-slate-700 p-2 shadow rounded">
-        <Link to={`/userprofile/${authorId}`} className="flex items-center space-x-2 no-underline text-gray-900 dark:text-gray-100">
-          <img className="overflow-hidden bg-gray-500 rounded-full ring-2 ring-gray-500 dark:ring-gray-300 w-8 h-8 object-cover" src={`https://maniac-forum.de/forum/images/profile/${authorId - authorId % 100}/${authorId}.jpg`} />
+    <div
+      className="w-full overflow-x-hidden p-2 pb-10 md:max-w-xl lg:w-full lg:max-w-none"
+      ref={messageRef}
+    >
+      <div className="flex w-full items-center justify-between rounded bg-slate-100 p-2 shadow dark:bg-slate-700">
+        <Link
+          to={`/userprofile/${authorId}`}
+          className="flex items-center space-x-2 text-gray-900 no-underline dark:text-gray-100"
+        >
+          <img
+            className="h-8 w-8 overflow-hidden rounded-full bg-gray-500 object-cover ring-2 ring-gray-500 dark:ring-gray-300"
+            src={`https://maniac-forum.de/forum/images/profile/${
+              authorId - (authorId % 100)
+            }/${authorId}.jpg`}
+          />
           <div>
             <div className="font-medium">{message.author}</div>
             <div className="text-xs">{message.date}</div>
@@ -69,17 +83,31 @@ export default function MessageDetail() {
         </Link>
         <div>
           <button className="action-button" onClick={() => navigate(`reply`)}>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
+              />
             </svg>
             <div>Antworten</div>
           </button>
         </div>
       </div>
-      <div className="prose prose-sm md:prose-base dark:prose-invert mt-4">
+      <div className="prose prose-sm mt-4 dark:prose-invert md:prose-base">
         <h3 className="font-semibold">{message.title}</h3>
-        <div className="mt-4" dangerouslySetInnerHTML={{ __html: message.content }} />
+        <div
+          className="mt-4"
+          dangerouslySetInnerHTML={{ __html: message.content }}
+        />
       </div>
-    </div >
+    </div>
   )
 }

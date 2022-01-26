@@ -1,12 +1,19 @@
-import { AppContext } from "~/context/AppContext"
-import { useContext, useState, useEffect, useRef } from "react"
+import { AppContext } from '~/context/AppContext'
+import { useContext, useState, useEffect, useRef } from 'react'
 import { Switch } from '@headlessui/react'
-import { Form, useSubmit, redirect, useLoaderData, useActionData, LoaderFunction } from "remix"
-import { darkMode } from "~/cookies/darkMode"
-import { user } from "~/cookies/user"
-import CurrentUser from "~/components/CurrentUser"
-import { fetchUserProfileById } from "~/api"
-import { UserProfile } from "~/types"
+import {
+  Form,
+  useSubmit,
+  redirect,
+  useLoaderData,
+  useActionData,
+  LoaderFunction,
+} from 'remix'
+import { darkMode } from '~/cookies/darkMode'
+import { user } from '~/cookies/user'
+import CurrentUser from '~/components/CurrentUser'
+import { fetchUserProfileById } from '~/api'
+import { UserProfile } from '~/types'
 
 export async function action({ request }: { request: Request }) {
   const form = await request.formData()
@@ -19,8 +26,8 @@ export async function action({ request }: { request: Request }) {
       darkModeCookie.darkMode = useDarkMode
       return redirect('/settings', {
         headers: {
-          'Set-Cookie': await darkMode.serialize(darkModeCookie)
-        }
+          'Set-Cookie': await darkMode.serialize(darkModeCookie),
+        },
       })
     case 'login':
       const nick = form.get('nick')
@@ -30,18 +37,23 @@ export async function action({ request }: { request: Request }) {
         `nick=${encodeURIComponent(form.get('nick') as string)}`,
         `pass=${encodeURIComponent(form.get('pass') as string)}`,
         `mode=login`,
-        `brdid=`
+        `brdid=`,
       ]
 
-      const response = await fetch(`https://maniac-forum.de/forum/pxmboard.php`, {
-        method: 'post',
-        headers: { 'Content-type': `application/x-www-form-urlencoded` },
-        body: formData.join(`&`)
-      })
+      const response = await fetch(
+        `https://maniac-forum.de/forum/pxmboard.php`,
+        {
+          method: 'post',
+          headers: { 'Content-type': `application/x-www-form-urlencoded` },
+          body: formData.join(`&`),
+        }
+      )
       const headers = response.headers
       const data = await response.text()
 
-      const match = data.match(/<div>id: (\d+)<\/div>\s+<div>nickname: (.*)<\/div>/m)
+      const match = data.match(
+        /<div>id: (\d+)<\/div>\s+<div>nickname: (.*)<\/div>/m
+      )
       if (match) {
         const userid = match[1]
         const username = match[2]
@@ -49,8 +61,8 @@ export async function action({ request }: { request: Request }) {
 
         return redirect('/settings', {
           headers: {
-            'Set-Cookie': await user.serialize({ userid, username, cookie })
-          }
+            'Set-Cookie': await user.serialize({ userid, username, cookie }),
+          },
         })
       } else {
         const match = data.match(/fehler \d+: (.*)<\/td>/m)
@@ -60,25 +72,26 @@ export async function action({ request }: { request: Request }) {
     case 'logout':
       return redirect(`/settings`, {
         headers: {
-          'Set-Cookie': await user.serialize(``, { expires: new Date(1970, 1, 1) })
-        }
+          'Set-Cookie': await user.serialize(``, {
+            expires: new Date(1970, 1, 1),
+          }),
+        },
       })
   }
   return null
 }
 
 export const loader: LoaderFunction = async (context) => {
-  const cookieHeader = context.request.headers.get("Cookie")
-  const userData = await user.parse(cookieHeader) || undefined
+  const cookieHeader = context.request.headers.get('Cookie')
+  const userData = (await user.parse(cookieHeader)) || undefined
 
   let userProfile: undefined | UserProfile = undefined
   if (userData && userData.userid) {
-    userProfile = await fetchUserProfileById(userData.userid) as UserProfile
+    userProfile = (await fetchUserProfileById(userData.userid)) as UserProfile
   }
 
   return { userData, userProfile }
 }
-
 
 export default function SettingsIndex() {
   const darkModeForm = useRef<HTMLFormElement>(null)
@@ -99,29 +112,62 @@ export default function SettingsIndex() {
   }
 
   return (
-    <div className="text-gray-900 dark:text-gray-100 h-full overflow-hidden p-2 lg:px-4 overflow-y-auto">
-      {context.currentUser ?
+    <div className="h-full overflow-hidden overflow-y-auto p-2 text-gray-900 dark:text-gray-100 lg:px-4">
+      {context.currentUser ? (
         <CurrentUser user={{ ...userProfile, ...context.currentUser }} />
-        :
+      ) : (
         <div>
-          <p className="font-medium">Du bist nicht eingeloggt. Bestimmte Features (posten, antworten, PMs) stehen nur für eingeloggte User zur Verfügung.</p>
-          {actionData && actionData.error ? <div className="mt-4 text-red-600 dark:text-red-400 font-medium">{actionData.error}</div> : null}
+          <p className="font-medium">
+            Du bist nicht eingeloggt. Bestimmte Features (posten, antworten,
+            PMs) stehen nur für eingeloggte User zur Verfügung.
+          </p>
+          {actionData && actionData.error ? (
+            <div className="mt-4 font-medium text-red-600 dark:text-red-400">
+              {actionData.error}
+            </div>
+          ) : null}
           <Form method="post" replace className="mt-4">
             <input type="hidden" name="_action" value="login" />
             <div className="">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300" htmlFor="nick">Nickname</label>
-              <input type="text" name="nick" id="nick" className="mt-1 focus:ring-blue-600 focus:border-blue-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:bg-slate-900" required placeholder="Nickname" />
+              <label
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                htmlFor="nick"
+              >
+                Nickname
+              </label>
+              <input
+                type="text"
+                name="nick"
+                id="nick"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:bg-slate-900 sm:text-sm"
+                required
+                placeholder="Nickname"
+              />
             </div>
             <div className="mt-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300" htmlFor="pass">Passwort</label>
-              <input type="password" name="pass" id="pass" className="mt-1 focus:ring-blue-600 focus:border-blue-600 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md dark:bg-slate-900" required placeholder="password" />
+              <label
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                htmlFor="pass"
+              >
+                Passwort
+              </label>
+              <input
+                type="password"
+                name="pass"
+                id="pass"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:bg-slate-900 sm:text-sm"
+                required
+                placeholder="password"
+              />
             </div>
             <div className="mt-4 flex justify-end">
-              <button type="submit" className="action-button">Login</button>
+              <button type="submit" className="action-button">
+                Login
+              </button>
             </div>
           </Form>
         </div>
-      }
+      )}
 
       <Form method="post" replace ref={darkModeForm} className="mt-8">
         <input type="hidden" name="_action" value="setDarkMode" />
@@ -133,18 +179,19 @@ export default function SettingsIndex() {
               type="submit"
               checked={enabled}
               onChange={toggleDarkMode}
-              className={`${enabled ? 'bg-blue-600' : 'bg-gray-200'
-                } relative inline-flex items-center h-6 rounded-full w-11 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+              className={`${
+                enabled ? 'bg-blue-600' : 'bg-gray-200'
+              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
             >
               <span
-                className={`${enabled ? 'translate-x-6' : 'translate-x-1'
-                  } inline-block w-4 h-4 transform bg-white rounded-full transition-transform`}
+                className={`${
+                  enabled ? 'translate-x-6' : 'translate-x-1'
+                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
               />
             </Switch>
           </div>
         </Switch.Group>
       </Form>
-
     </div>
   )
 }

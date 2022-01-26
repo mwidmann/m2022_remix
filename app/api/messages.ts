@@ -1,16 +1,20 @@
 import * as cheerio from 'cheerio'
-import type { LoaderFunction } from "remix";
-import { ThreadMessage } from '~/types';
+import type { LoaderFunction } from 'remix'
+import { ThreadMessage } from '~/types'
 
-export const fetchMessages: LoaderFunction = async ({ params }): Promise<ThreadMessage[] | Response> => {
+export const fetchMessages: LoaderFunction = async ({
+  params,
+}): Promise<ThreadMessage[] | Response> => {
   try {
-    console.time("messages:content")
+    console.time('messages:content')
     const { boardId, threadId } = params
-    const threadResponse = await fetch(`https://maniac-forum.de/forum/pxmboard.php?mode=thread&brdid=${boardId}&thrdid=${threadId}`)
+    const threadResponse = await fetch(
+      `https://maniac-forum.de/forum/pxmboard.php?mode=thread&brdid=${boardId}&thrdid=${threadId}`
+    )
     const threadContent = await threadResponse.text()
-    console.timeEnd("messages:content")
+    console.timeEnd('messages:content')
 
-    console.time("messages:cheerio")
+    console.time('messages:cheerio')
     const $ = cheerio.load(threadContent)
 
     const messages: ThreadMessage[] = []
@@ -32,17 +36,16 @@ export const fetchMessages: LoaderFunction = async ({ params }): Promise<ThreadM
         hierarchy,
         author,
         id,
-        date
+        date,
       })
     })
 
-    console.timeEnd("messages:cheerio")
+    console.timeEnd('messages:cheerio')
 
-    return messages;
-
+    return messages
   } catch (e: any) {
     return new Response(`Error fetching content ` + e.message, {
-      status: 500
+      status: 500,
     })
   }
 }
