@@ -1,12 +1,12 @@
-import { createContext } from "react";
-import { type AppState, UserData } from "~/types";
+import { createContext } from 'react'
+import { type AppState, UserData } from '~/types'
 
 export const appState: AppState = {
   darkMode: false,
-  setUseDarkMode: (value: boolean) => { },
+  setUseDarkMode: (value: boolean) => {},
   currentUser: undefined,
-  setCurrentUser: (user: undefined | UserData) => { },
-  pms: undefined
+  setCurrentUser: (user: undefined | UserData) => {},
+  pms: undefined,
 }
 
 export const AppContext = createContext(appState)

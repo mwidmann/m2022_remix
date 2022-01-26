@@ -3,35 +3,34 @@ import type { LoaderFunction } from 'remix'
 import { Message, PlainMessage } from '~/types'
 
 type MessageInfo = {
-  brdid?: number,
-  thrdid?: number,
+  brdid?: number
+  thrdid?: number
   msgid?: number
 }
 const extractMessageInfo = (str: string): MessageInfo => {
-  const regex = /(brdid|msgid|thrdid)=(\d*)/gm;
+  const regex = /(brdid|msgid|thrdid)=(\d*)/gm
   let m
   let r = {
     brdid: 0,
     thrdid: 0,
-    msgid: 0
+    msgid: 0,
   }
   while ((m = regex.exec(str)) !== null) {
     // This is necessary to avoid infinite loops with zero-width matches
     if (m.index === regex.lastIndex) {
-      regex.lastIndex++;
+      regex.lastIndex++
     }
-    r[(m[1] as keyof MessageInfo)] = parseInt(m[2] as string)
+    r[m[1] as keyof MessageInfo] = parseInt(m[2] as string)
   }
   return r
 }
-
 
 const renderNestedBlockquotes = (str: string): string => {
   const lines = str.split(`\n`)
   let nestingLevel = 0
   let nestedBlockquotes = ``
 
-  lines.forEach(line => {
+  lines.forEach((line) => {
     let match = line.match(/^(&gt;)*/)
     if (match !== null) {
       const currentNestingLevel = match[0].length / 4
@@ -59,19 +58,22 @@ const renderNestedBlockquotes = (str: string): string => {
   return nestedBlockquotes
 }
 
-
-export const fetchMessage: LoaderFunction = async ({ params }): Promise<Message | Response> => {
+export const fetchMessage: LoaderFunction = async ({
+  params,
+}): Promise<Message | Response> => {
   try {
     console.time(`message:content`)
     const { boardId, messageId } = params
-    const messageResponse = await fetch(`https://maniac-forum.de/forum/pxmboard.php?mode=message&brdid=${boardId}&msgid=${messageId}`)
+    const messageResponse = await fetch(
+      `https://maniac-forum.de/forum/pxmboard.php?mode=message&brdid=${boardId}&msgid=${messageId}`
+    )
     const messageContent = await messageResponse.text()
     console.timeEnd(`message:content`)
 
     console.time('message:cheerio')
     const $ = cheerio.load(messageContent)
     let $contentEl = $(`.bg2 > td > font`)
-    let replacements: { find: string, replaceWith: string }[] = []
+    let replacements: { find: string; replaceWith: string }[] = []
 
     $contentEl.find(`a`).each((_, a) => {
       const $a = $(a)
@@ -90,12 +92,14 @@ export const fetchMessage: LoaderFunction = async ({ params }): Promise<Message 
       }
 
       // youtube video
-      match = href.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/)
+      match = href.match(
+        /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
+      )
       if (match !== null) {
         const youtubeIframe = `<iframe src="https://youtube.com/embed/${match[1]}" allowfullscreen class="w-full aspect-video"></iframe>`
         replacements.push({
           find: '[' + $a.prop(`outerHTML`) + ']',
-          replaceWith: '[' + $a.prop(`outerHTML`) + ']<br><br>' + youtubeIframe
+          replaceWith: '[' + $a.prop(`outerHTML`) + ']<br><br>' + youtubeIframe,
         })
       }
 
@@ -105,30 +109,37 @@ export const fetchMessage: LoaderFunction = async ({ params }): Promise<Message 
         const img = `<img src="${href}" class="w-full h-auto"/>`
         replacements.push({
           find: '[' + $a.prop(`outerHTML`) + ']',
-          replaceWith: '[' + $a.prop(`outerHTML`) + ']<br><br>' + img
+          replaceWith: '[' + $a.prop(`outerHTML`) + ']<br><br>' + img,
         })
       }
     })
 
-    const title = $(`table > tbody > tr > td > table > tbody > tr > td > b`).text().trim()
+    const title = $(`table > tbody > tr > td > table > tbody > tr > td > b`)
+      .text()
+      .trim()
     const $el = $(`table > tbody > tr:nth-child(2) > td#norm > a`)
     const author = $el.text().trim()
     const href = $el.attr('href') ?? ''
     const authorId = parseInt(href.replace(/.*usrid=/, '') ?? '0')
-    const date = $(`table > tbody > tr:nth-child(3) > td#norm:nth-child(2)`).text().trim()
+    const date = $(`table > tbody > tr:nth-child(3) > td#norm:nth-child(2)`)
+      .text()
+      .trim()
 
     let content = $contentEl.html() ?? ''
 
     $contentEl.find(`font[color='808080']`).each((_, bq) => {
       const $bq = $(bq)
       console.log($bq.html())
-      content = content.replace($bq.prop(`outerHTML`) ?? '', renderNestedBlockquotes($bq.html() ?? ''))
+      content = content.replace(
+        $bq.prop(`outerHTML`) ?? '',
+        renderNestedBlockquotes($bq.html() ?? '')
+      )
     })
 
     content = content.replace(/\t/g, '')
     // content = content.replace(/\n/g, '<br>\n')
-    content = content.replace(/&amp;/g, '&');
-    replacements.forEach(replacement => {
+    content = content.replace(/&amp;/g, '&')
+    replacements.forEach((replacement) => {
       content = content.replace(replacement.find, replacement.replaceWith)
     })
 
@@ -148,39 +159,43 @@ export const fetchMessage: LoaderFunction = async ({ params }): Promise<Message 
       content,
       authorId,
       date,
-      threadId
+      threadId,
     }
-
   } catch (e: any) {
     return new Response(`Error fetching content ` + e.message, {
-      status: 500
+      status: 500,
     })
   }
 }
 
-export const fetchMessagePlain: LoaderFunction = async ({ params }): Promise<PlainMessage | Response> => {
+export const fetchMessagePlain: LoaderFunction = async ({
+  params,
+}): Promise<PlainMessage | Response> => {
   try {
-    console.time("plainmessage:content")
+    console.time('plainmessage:content')
     const { boardId, messageId } = params
-    const messageResponse = await fetch(`https://maniac-forum.de/forum/pxmboard.php?mode=message&brdid=${boardId}&msgid=${messageId}`)
+    const messageResponse = await fetch(
+      `https://maniac-forum.de/forum/pxmboard.php?mode=message&brdid=${boardId}&msgid=${messageId}`
+    )
     const messageContent = await messageResponse.text()
-    console.timeEnd("plainmessage:content")
+    console.timeEnd('plainmessage:content')
 
-    console.time("plainmessage:cheerio")
+    console.time('plainmessage:cheerio')
     const $ = cheerio.load(messageContent)
-    const title = $(`table > tbody > tr > td > table > tbody > tr > td > b`).text().trim()
+    const title = $(`table > tbody > tr > td > table > tbody > tr > td > b`)
+      .text()
+      .trim()
     const content = $(`.bg2 > td > font`).text().trim()
 
-    console.timeEnd("plainmessage:cheerio")
+    console.timeEnd('plainmessage:cheerio')
 
     return {
       title,
       content,
     }
-
   } catch (e: any) {
     return new Response(`Error fetching content ` + e.message, {
-      status: 500
+      status: 500,
     })
   }
 }

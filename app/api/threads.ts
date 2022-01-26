@@ -2,16 +2,20 @@ import * as cheerio from 'cheerio'
 import type { LoaderFunction } from 'remix'
 import { Thread } from '~/types'
 
-export const fetchThreads: LoaderFunction = async ({ params }): Promise<Thread[] | Response> => {
+export const fetchThreads: LoaderFunction = async ({
+  params,
+}): Promise<Thread[] | Response> => {
   const id = params.boardId
 
   try {
-    console.time("threads:content")
-    const boardResposne = await fetch(`https://maniac-forum.de/forum/pxmboard.php?mode=threadlist&brdid=${id}`)
+    console.time('threads:content')
+    const boardResposne = await fetch(
+      `https://maniac-forum.de/forum/pxmboard.php?mode=threadlist&brdid=${id}`
+    )
     const boardContent = await boardResposne.text()
-    console.timeEnd("threads:content")
+    console.timeEnd('threads:content')
 
-    console.time("thread:cheerio")
+    console.time('thread:cheerio')
 
     const $ = cheerio.load(boardContent)
 
@@ -22,7 +26,9 @@ export const fetchThreads: LoaderFunction = async ({ params }): Promise<Thread[]
     $threadList.find('> a').each((_, a) => {
       const $a = $(a)
       const title = $a.find(`font`).text() ?? ''
-      const id = parseInt(($a.attr('onclick') ?? '').replace(`ld(`, '').replace(`,0)`, ''))
+      const id = parseInt(
+        ($a.attr('onclick') ?? '').replace(`ld(`, '').replace(`,0)`, '')
+      )
       threads.push({
         title,
         id,
@@ -39,14 +45,17 @@ export const fetchThreads: LoaderFunction = async ({ params }): Promise<Thread[]
       t.author = $f.find('span').text().trim()
       $f.find('b').remove()
       let foundDate = $f.text()
-      let m = [...foundDate.matchAll(/^\s+am\s+(\d{2}.\d{2}.\d{2} \d{2}:\d{2})\s+\(\s+Antworten: (\d+)/gm)]
+      let m = [
+        ...foundDate.matchAll(
+          /^\s+am\s+(\d{2}.\d{2}.\d{2} \d{2}:\d{2})\s+\(\s+Antworten: (\d+)/gm
+        ),
+      ]
       t.date = m[0][1]
       t.messages = parseInt(m[0][2])
       m = [...foundDate.matchAll(/Letzte:\s+(\d{2}.\d{2}.\d{2} \d{2}:\d{2})/gm)]
       if (m.length > 0) {
         t.lastReply = m[0][1]
       }
-
     })
 
     $threadList.find('> img').each((index, img) => {
@@ -54,12 +63,12 @@ export const fetchThreads: LoaderFunction = async ({ params }): Promise<Thread[]
       const src = $(img).attr('src')
       t.isFixed = src?.includes('fixed.gif')
     })
-    console.timeEnd("thread:cheerio")
+    console.timeEnd('thread:cheerio')
 
     return threads
   } catch (e: any) {
     return new Response(`Error fetching content ` + e.message, {
-      status: 500
+      status: 500,
     })
   }
 }
