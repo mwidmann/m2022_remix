@@ -7,6 +7,8 @@ export const appState: AppState = {
   currentUser: undefined,
   setCurrentUser: (user: undefined | UserData) => {},
   pms: undefined,
+  isMenuOpen: false,
+  setMenuOpen: (value: boolean) => {},
 }
 
 export const AppContext = createContext(appState)

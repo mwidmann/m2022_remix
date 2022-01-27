@@ -71,18 +71,14 @@ export default function BoardSelector({
       >
         {boards.map((board) => (
           <li
-            className={`relative cursor-default select-none text-gray-900 hover:bg-blue-200 hover:text-blue-900 dark:text-gray-300 lg:rounded-md lg:text-gray-100 lg:hover:bg-gray-700 lg:hover:text-gray-100 dark:lg:text-gray-300 ${
+            className={`relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 hover:bg-blue-200 hover:text-blue-900 dark:text-gray-300 lg:rounded-md lg:px-3 lg:text-gray-100 lg:hover:bg-gray-700 lg:hover:text-gray-100 dark:lg:text-gray-300 ${
               board.id === currentBoard ? `lg:bg-slate-700 lg:shadow-md` : ``
             }`}
             id="listbox-option-0"
             role="option"
             key={board.id}
           >
-            <Link
-              to={`/board/${board.id}`}
-              onClick={() => setShowList(false)}
-              className="block py-2 pl-3 pr-9 lg:px-3"
-            >
+            <Link to={`/board/${board.id}`} onClick={() => setShowList(false)}>
               <div className="flex items-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

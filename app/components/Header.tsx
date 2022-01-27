@@ -17,13 +17,8 @@ import { AppContext } from '~/context/AppContext'
 import { type To } from 'react-router'
 
 export default function Header({ boards }: { boards: Board[] }) {
-  const location = useLocation()
-
-  const [isMenuOpen, setMenuOpen] = useState(location.pathname === '/settings')
   const transition = useTransition()
-  const { darkMode } = useContext(AppContext)
-  const navigate = useNavigate()
-
+  const { isMenuOpen, setMenuOpen, pms, currentUser } = useContext(AppContext)
   const { boardId } = useParams()
   const isLoading = transition.state === 'loading'
 
@@ -54,15 +49,38 @@ export default function Header({ boards }: { boards: Board[] }) {
           <div className="ml-4 h-5 w-5">{isLoading ? <Spinner /> : null}</div>
         </div>
       </div>
-      <div className="relative text-gray-100">
+      <div className="relative flex items-center space-x-2 text-gray-100">
+        {currentUser ? (
+          <button className="relative" onClick={() => alert(`coming soon`)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+              />
+            </svg>
+            <div
+              className={`absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-xs font-bold text-white shadow ${
+                pms && pms > 0 ? `bg-green-600` : `bg-slate-600`
+              }`}
+            >
+              {pms}
+            </div>
+          </button>
+        ) : null}
         <button
           onClick={() => {
             if (isMenuOpen) {
               setMenuOpen(false)
-              navigate(-1)
             } else {
               setMenuOpen(true)
-              navigate(`/settings`)
             }
           }}
         >
@@ -90,20 +108,6 @@ export default function Header({ boards }: { boards: Board[] }) {
             )}
           </svg>
         </button>
-        {/* <ul className={`absolute right-0 w-auto transition-opacity duration-300 z-20 bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 ring-1 ring-black dark:ring-gray-300 ring-opacity-5 rounded-md ${isMenuOpen ? `opacity-100 pointer-events-auto` : `opacity-0 pointer-events-none`}`}>
-          <li className="py-2 px-3">
-            <Link to={`/login`}>Anmelden</Link>
-          </li>
-          <li className="py-2 px-3">
-            <Link to={`/login`}>Einstellungen</Link>
-          </li>
-          <li className="py-2 px-3">
-            <Form method="post" replace>
-              <input type="hidden" name="dark-mode" value={darkMode ? '0' : '1'} />
-              <button type="submit">toogle dark mode {JSON.stringify(darkMode)}</button>
-            </Form>
-          </li>
-        </ul> */}
       </div>
     </div>
   )

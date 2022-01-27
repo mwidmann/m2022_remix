@@ -34,7 +34,8 @@ export default function MessagesList() {
   const params = useParams()
   const transition = useTransition()
 
-  const messages: ThreadMessage[] = useLoaderData()
+  const { thread, count }: { thread: ThreadMessage; count: number } =
+    useLoaderData()
   const ref = useRef<HTMLDivElement>(null)
   const listRef = useRef<HTMLDivElement>(null)
   const { setCount } = useThreadMessageCount()
@@ -56,7 +57,7 @@ export default function MessagesList() {
     listRef.current?.scrollTo(0, 0)
     setCount((oldCount) => ({
       ...oldCount,
-      [`${params.threadId}`]: messages.length - 1,
+      [`${params.threadId}`]: count,
     }))
   }, [params.threadId])
 
@@ -107,9 +108,7 @@ export default function MessagesList() {
         "
         ref={listRef}
       >
-        {messages.map((message) => (
-          <SingleMessage message={message} key={message.id} />
-        ))}
+        <SingleMessage message={thread} />
       </div>
     </div>
   )

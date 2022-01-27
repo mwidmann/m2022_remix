@@ -23,6 +23,9 @@ export type ThreadMessage = {
   author: string
   id: number
   date: string
+  ts: number
+  tts: number
+  children: ThreadMessage[]
 }
 
 export type PlainMessage = {
@@ -49,6 +52,8 @@ export type AppState = {
   currentUser: undefined | UserData
   setCurrentUser: (user: undefined | UserData) => void
   pms: undefined | number
+  isMenuOpen: boolean
+  setMenuOpen: (v: boolean) => void
 }
 
 export type BoardsResponse = {
@@ -58,4 +63,9 @@ export type BoardsResponse = {
 
 export type UserProfile = {
   [key: string]: string
+}
+
+export type SettingsCookie = {
+  order?: 'default' | 'by-newest-answer'
+  theme?: 'dark' | 'light' | 'neon'
 }

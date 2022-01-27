@@ -9,7 +9,7 @@
     font-display: swap;
     font-style: normal;
     font-named-instance: 'Regular';
-    src: url("/fonts/Inter.variable.woff2?v=3.19") format("woff2");
+    src: url('/fonts/Inter.variable.woff2?v=3.19') format('woff2');
   }
   @font-face {
     font-family: 'Inter var';
@@ -17,13 +17,13 @@
     font-display: swap;
     font-style: italic;
     font-named-instance: 'Italic';
-    src: url("/fonts/Inter.variable.woff2?v=3.19") format("woff2");
+    src: url('/fonts/Inter.variable.woff2?v=3.19') format('woff2');
   }
 }
 
 @layer components {
   .blockquote {
-    @apply block border-l-2  px-2 md:px-4 text-gray-400 my-2;
+    @apply my-2 block  border-l-2 px-2 text-gray-400 md:px-4;
   }
 
   .blockquote + br {
@@ -31,10 +31,10 @@
   }
 
   .lds-ring {
-    @apply inline-block relative w-full h-full;
+    @apply relative inline-block h-full w-full;
   }
   .lds-ring div {
-    @apply block absolute w-full h-full border-4 border-transparent border-t-blue-500 dark:border-t-slate-500 rounded-full;
+    @apply absolute block h-full w-full rounded-full border-4 border-transparent border-t-blue-500 dark:border-t-slate-500;
     animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   }
   .lds-ring div:nth-child(1) {
@@ -56,18 +56,18 @@
   }
 
   img {
-    @apply inline-block relative overflow-hidden;
+    @apply relative inline-block overflow-hidden;
   }
   img::before {
-    @apply absolute w-full h-full bg-gray-500;
+    @apply absolute h-full w-full bg-gray-500;
     content: '';
   }
 
   button.action-button {
-    @apply inline-flex items-center justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 space-x-1;
+    @apply inline-flex items-center justify-center space-x-1 rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
   }
 
   button.spoiler-button {
-    @apply inline-flex items-center justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 space-x-1;
+    @apply inline-flex items-center justify-center space-x-1 rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
   }
 }
