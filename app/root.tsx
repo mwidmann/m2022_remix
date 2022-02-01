@@ -7,15 +7,17 @@ import {
   Scripts,
   useLoaderData,
 } from 'remix'
-import type { MetaFunction, LoaderFunction } from 'remix'
+import type { MetaFunction, LoaderFunction, ActionFunction } from 'remix'
 import { useRef, useEffect, useState } from 'react'
-import styles from './tailwind.css'
-import { darkMode } from './cookies/darkMode'
+import { fetchBoards } from './api'
+import { settings } from './cookies/settings'
 import { user } from './cookies/user'
 import { AppContext } from './context/AppContext'
-import { Board, UserData } from '~/types'
+import { Board, UserData, Settings } from '~/types'
 import Header from '~/components/Header'
-import { fetchBoards } from './api'
+import SettingsMenu from './components/SettingsMenu'
+
+import styles from './tailwind.css'
 
 export function links() {
   return [{ rel: 'stylesheet', href: styles }]
@@ -26,46 +28,54 @@ export const meta: MetaFunction = () => {
 }
 
 type LoaderData = {
-  darkMode: boolean | undefined
   data: { boards: Board[]; pms?: number }
   userData: undefined | UserData
+  settings: Settings
 }
 
 export const loader: LoaderFunction = async (context): Promise<LoaderData> => {
   const cookieHeader = context.request.headers.get('Cookie')
-  const darkModeCookie = (await darkMode.parse(cookieHeader)) || {}
-  darkModeCookie.darkMode !== undefined
   const userData = (await user.parse(cookieHeader)) || ``
+  if (userData && userData.userid) {
+    userData.userid = parseInt(userData.userid, 10)
+  }
+  const settingsData = (await settings.parse(cookieHeader)) || {}
   const data = await fetchBoards(context)
 
   return {
-    darkMode:
-      darkModeCookie?.darkMode !== undefined
-        ? darkModeCookie.darkMode
-        : undefined,
     data,
     userData,
+    settings: settingsData,
   }
 }
 
 export default function App() {
   const body = useRef<HTMLBodyElement>(null)
-  const { darkMode, data, userData } = useLoaderData<LoaderData>()
-  const [useDarkMode, setUseDarkMode] = useState<boolean>(
-    darkMode !== undefined ? darkMode : false
-  )
+  const { settings, data, userData } = useLoaderData<LoaderData>()
   const [currentUser, setCurrentUser] = useState<undefined | UserData>(userData)
+  const [isMenuOpen, setMenuOpen] = useState<boolean>(false)
 
   useEffect(() => {
-    if (darkMode === undefined) {
-      setUseDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches)
+    setCurrentUser(userData)
+  }, [userData])
+
+  useEffect(() => {
+    if (settings.theme === undefined) {
+      settings.theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
     }
-    if (useDarkMode) {
+
+    if (settings.theme === 'dark') {
+      body.current?.classList.remove('neon')
       body.current?.classList.add('dark')
-    } else {
+    } else if (settings.theme === 'light') {
+      body.current?.classList.remove('dark', 'neon')
+    } else if (settings.theme === 'neon') {
       body.current?.classList.remove('dark')
+      body.current?.classList.add('neon')
     }
-  }, [body.current])
+  }, [body.current, settings])
 
   return (
     <html lang="en">
@@ -77,19 +87,23 @@ export default function App() {
       </head>
       <body
         ref={body}
-        className={`antialiased ${
-          useDarkMode
+        className={`relative antialiased ${
+          settings.theme === `dark`
             ? `dark bg-slate-900 text-gray-100`
-            : `bg-gray-50/50 text-slate-900`
+            : settings.theme === `neon`
+            ? `neon bg-neonb-900 text-neonf-100`
+            : `bg-gray-50 text-slate-900`
         }`}
       >
         <AppContext.Provider
           value={{
-            darkMode: useDarkMode,
-            setUseDarkMode,
+            // darkMode: useDarkMode,
+            isMenuOpen,
+            setMenuOpen,
             currentUser,
             setCurrentUser,
             pms: data.pms,
+            settings,
           }}
         >
           <div className="flex h-screen w-screen flex-col">
@@ -97,7 +111,10 @@ export default function App() {
               <Header boards={data.boards} />
             </div>
 
-            <Outlet />
+            <div className="relative h-full flex-grow overflow-hidden">
+              <SettingsMenu />
+              <Outlet />
+            </div>
           </div>
         </AppContext.Provider>
         <Scripts />

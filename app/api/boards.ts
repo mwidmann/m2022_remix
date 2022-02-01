@@ -10,6 +10,7 @@ export const fetchBoards: LoaderFunction = async ({
     console.time('content')
     const cookieHeader = request.headers.get('Cookie')
     const userData = (await user.parse(cookieHeader)) || {}
+    console.log(userData.cookie)
     const boardIndex = await fetch(
       'https://maniac-forum.de/forum/pxmboard.php',
       {

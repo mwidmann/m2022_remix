@@ -129,7 +129,6 @@ export const fetchMessage: LoaderFunction = async ({
 
     $contentEl.find(`font[color='808080']`).each((_, bq) => {
       const $bq = $(bq)
-      console.log($bq.html())
       content = content.replace(
         $bq.prop(`outerHTML`) ?? '',
         renderNestedBlockquotes($bq.html() ?? '')

@@ -1,20 +1,6 @@
-import {
-  ActionFunction,
-  Form,
-  Link,
-  LoaderFunction,
-  useActionData,
-  useLoaderData,
-  useParams,
-} from 'remix'
-import { useState } from 'react'
-import { user } from '~/cookies/user'
-import { fetchMessagePlain } from '~/api'
+import { useActionData, ActionFunction } from 'remix'
 import PostMessage from '~/components/PostMessage'
-
-export const loader: LoaderFunction = async (context) => {
-  return await fetchMessagePlain(context)
-}
+import { user } from '~/cookies/user'
 
 export const action: ActionFunction = async ({ request, params }) => {
   const cookieHeader = request.headers.get('Cookie')
@@ -32,7 +18,6 @@ export const action: ActionFunction = async ({ request, params }) => {
     `body=${encodeURIComponent((formData.get(`body`) as string) ?? '')}`,
     `mode=messagesave`,
     `brdid=${params.boardId}`,
-    `msgid=${params.messageId}`,
   ]
 
   if (formData.has('notification') && formData.get('notification') === '1') {
@@ -49,6 +34,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   })
 
   const data = await response.text()
+  console.log(data)
   let match = data.match(
     /Vielen Dank für deinen Beitrag.*pxmboard.php\?mode=message&brdid=(\d+)&msgid=(\d+)/m
   )
@@ -71,22 +57,11 @@ export const action: ActionFunction = async ({ request, params }) => {
   return {}
 }
 
-export default function Reply() {
-  const params = useParams()
-  const data = useLoaderData()
+export default function NewThread() {
   const actionData = useActionData()
-  const [wantsToCite, setWantsToCite] = useState<boolean>(false)
-  const [notifyByMail, setNotifyByMail] = useState<boolean>(false)
-  console.log(actionData)
-
-  const title = data.title.startsWith(`Re:`) ? data.title : `Re: ${data.title}`
-  const body = wantsToCite
-    ? `>` + data.content.trim().replace(/\n/g, '\n>').replace(/&gt;/g, '>')
-    : ``
-
   return (
     <div className="h-full overflow-hidden p-2 text-gray-900 neon:text-neonf-100 dark:text-gray-100 lg:px-4">
-      <PostMessage actionData={actionData} data={data} mode="reply" />
+      <PostMessage actionData={actionData} data={undefined} mode="new" />
     </div>
   )
 }

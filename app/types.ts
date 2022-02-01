@@ -23,6 +23,9 @@ export type ThreadMessage = {
   author: string
   id: number
   date: string
+  ts: number
+  tts: number
+  children: ThreadMessage[]
 }
 
 export type PlainMessage = {
@@ -44,11 +47,13 @@ export type UserData = {
 }
 
 export type AppState = {
-  darkMode: boolean
-  setUseDarkMode: (v: boolean) => void
+  // darkMode: boolean
   currentUser: undefined | UserData
   setCurrentUser: (user: undefined | UserData) => void
   pms: undefined | number
+  isMenuOpen: boolean
+  setMenuOpen: (v: boolean) => void
+  settings: Settings
 }
 
 export type BoardsResponse = {
@@ -58,4 +63,35 @@ export type BoardsResponse = {
 
 export type UserProfile = {
   [key: string]: string
+}
+
+export type SettingsItem = {
+  label: string
+  name: string
+  description?: string
+  values: string[]
+  current: string
+  icons: JSX.Element[]
+}
+
+export enum DisplayModes {
+  frames = '3-Frame-Darstellung',
+  inline = 'Inline-Darstellung',
+}
+
+export enum SortorderModes {
+  default = 'Standard',
+  newest = 'Neueste Äste zuerst',
+}
+
+export enum Logo {
+  new = 'new',
+  old = 'old',
+}
+
+export type Settings = {
+  theme?: 'dark' | 'light' | 'neon'
+  displayMode?: DisplayModes
+  sortOrder?: SortorderModes
+  logo?: Logo
 }

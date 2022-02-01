@@ -17,7 +17,7 @@ export default function SingleMessage({ message }: { message: ThreadMessage }) {
     transition.location?.pathname?.endsWith(`message/${message.id}`)
   const isCurrentClass =
     isLoading || currentMessage === message.id
-      ? `bg-blue-200 dark:bg-slate-600 dark:text-gray-100 shadow-md`
+      ? `bg-blue-200 dark:bg-slate-600 dark:text-gray-100 shadow-md neon:bg-neonb-500 neon:text-neonf-300`
       : ``
   const isCurrentUserClass =
     context.currentUser?.username === message.author
@@ -25,27 +25,31 @@ export default function SingleMessage({ message }: { message: ThreadMessage }) {
       : `border-transparent`
 
   return (
-    <div
-      className={`darnk:border-gray-500 border-b border-gray-700 ${isCurrentClass}`}
-      id={`msg${currentMessage}`}
-    >
-      <Link
-        to={`message/${message.id}`}
-        className={`block border-l-4 py-2 pr-2 visited:text-slate-400 dark:visited:text-slate-400 ${isCurrentUserClass}`}
+    <>
+      <div
+        className={`border-b border-gray-700 dark:border-gray-500 ${isCurrentClass}`}
+        id={`msg${currentMessage}`}
       >
-        <div style={indentation} className="flex items-start justify-between">
-          <div className="overflow-hidden">
-            {' '}
-            <p className="flex overflow-hidden text-ellipsis whitespace-nowrap text-sm font-semibold md:text-base">
-              {message.title}
-            </p>
-            <p className="text-xs text-slate-500 dark:text-slate-300">
-              <span className="font-sm font-semibold">{message.author}</span> -{' '}
-              {message.date}
-            </p>
+        <Link
+          to={`message/${message.id}`}
+          className={`block border-l-4 py-2 pr-2 visited:text-slate-400 neon:visited:text-neonf-400 dark:visited:text-slate-400 ${isCurrentUserClass}`}
+        >
+          <div style={indentation} className="flex items-start justify-between">
+            <div className="overflow-hidden">
+              <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-semibold md:text-base">
+                {message.title}
+              </p>
+              <p className="text-xs text-slate-500 neon:text-neonf-900 dark:text-slate-300">
+                <span className="font-sm font-semibold">{message.author}</span>{' '}
+                - {message.date}
+              </p>
+            </div>
           </div>
-        </div>
-      </Link>
-    </div>
+        </Link>
+      </div>
+      {message.children?.map((message) => (
+        <SingleMessage message={message} key={message.id} />
+      ))}
+    </>
   )
 }
