@@ -7,7 +7,7 @@ import {
   Scripts,
   useLoaderData,
 } from 'remix'
-import type { MetaFunction, LoaderFunction, ActionFunction } from 'remix'
+import type { MetaFunction, LoaderFunction, LinksFunction } from 'remix'
 import { useRef, useEffect, useState } from 'react'
 import { fetchBoards } from './api'
 import { settings } from './cookies/settings'
@@ -18,9 +18,15 @@ import Header from '~/components/Header'
 import SettingsMenu from './components/SettingsMenu'
 
 import styles from './tailwind.css'
+import favicon_new from '../public/favicon_new.svg'
+// import favicon_old from '../public/favicon_old.svg'
 
-export function links() {
-  return [{ rel: 'stylesheet', href: styles }]
+export const links: LinksFunction = () => {
+  const favicon = favicon_new
+  return [
+    { rel: 'stylesheet', href: styles },
+    { rel: 'icon', href: favicon },
+  ]
 }
 
 export const meta: MetaFunction = () => {

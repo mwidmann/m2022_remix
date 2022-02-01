@@ -1,11 +1,10 @@
-import { MouseEventHandler, useContext } from 'react'
-import { useRef } from 'react'
+import { Link } from 'remix'
+import { useRef, useContext, PointerEventHandler } from 'react'
 import { AppContext } from '~/context/AppContext'
 import CurrentUser from './CurrentUser'
 import LoginForm from './LoginForm'
 import { SettingsItem, DisplayModes, SortorderModes, Logo } from '~/types'
 import SettingsToggle from './SettingsToggle'
-import { PointerEventHandler } from 'react'
 
 export default function SettingsMenu() {
   const { currentUser, isMenuOpen, settings, setMenuOpen } =
@@ -200,10 +199,19 @@ export default function SettingsMenu() {
           <div className="p-2">
             <h2 className="text-xs font-bold">Einstellungen</h2>
           </div>
-          <div className="p-2">
+          <div className="border-b p-2">
             {availableSettings.map((s, index) => (
               <SettingsToggle setting={s} key={index} />
             ))}
+          </div>
+          <div className="p-2">
+            <Link
+              to={`/about`}
+              onClick={() => setMenuOpen(false)}
+              className="text-xs"
+            >
+              Über diese App
+            </Link>
           </div>
         </div>
       </div>
