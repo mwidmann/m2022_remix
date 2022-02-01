@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio'
 import type { LoaderFunction } from 'remix'
-import type { SettingsCookie, ThreadMessage } from '~/types'
+import { Settings, ThreadMessage, SortorderModes } from '~/types'
 import { parse } from 'date-fns'
 import { settings as settingsCookie } from '~/cookies/settings'
 
@@ -15,14 +15,17 @@ const sort = (message: ThreadMessage) => {
 export const fetchMessages: LoaderFunction = async ({
   request,
   params,
-}): Promise<{ thread: ThreadMessage; count: number }> => {
+}): Promise<{ thread?: ThreadMessage; count?: number }> => {
   console.time('messages:content')
 
   const cookieHeader = request.headers.get('Cookie')
-  const settings: SettingsCookie =
-    (await settingsCookie.parse(cookieHeader)) || {}
+  const settings: Settings = (await settingsCookie.parse(cookieHeader)) || {}
 
   const { boardId, threadId } = params
+  console.log(threadId)
+  if (threadId === `undefined`) {
+    return {}
+  }
   const threadResponse = await fetch(
     `https://maniac-forum.de/forum/pxmboard.php?mode=thread&brdid=${boardId}&thrdid=${threadId}`
   )
@@ -74,7 +77,10 @@ export const fetchMessages: LoaderFunction = async ({
     null
   )
 
-  if (settings.order === 'by-newest-answer') {
+  console.log(messages)
+  console.log(threaded)
+
+  if (settings.sortOrder === SortorderModes.newest) {
     threaded = sort(threaded!)
     threaded.children?.sort((m1, m2) => m2.tts - m1.tts)
   }

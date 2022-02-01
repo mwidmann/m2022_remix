@@ -1,11 +1,13 @@
 import { useContext } from 'react'
-import { Form, Link } from 'remix'
+import { Form, Link, useFetcher } from 'remix'
 import { AppContext } from '~/context/AppContext'
 import { UserData } from '~/types'
 
 export default function CurrentUser({ user }: { user: UserData }) {
   const { pms } = useContext(AppContext)
   const userId = user.userid
+  const fetcher = useFetcher()
+
   return (
     <div>
       <div className="flex w-full items-center justify-between">
@@ -18,12 +20,12 @@ export default function CurrentUser({ user }: { user: UserData }) {
           />
           <div className="font-bold">{user.username}</div>
         </div>
-        <Form method="post">
+        <fetcher.Form method="post" action="/api/settings">
           <input type="hidden" name="_action" value="logout" />
           <button type="submit" className="action-button">
             Abmelden
           </button>
-        </Form>
+        </fetcher.Form>
       </div>
       {/* <p className="mt-4">
         Du hast

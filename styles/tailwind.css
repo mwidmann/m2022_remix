@@ -23,7 +23,7 @@
 
 @layer components {
   .blockquote {
-    @apply my-2 block  border-l-2 px-2 text-gray-400 md:px-4;
+    @apply my-2 block border-l-2 px-2 text-gray-400 neon:border-neonf-400 neon:text-neonf-400 md:px-4;
   }
 
   .blockquote + br {
@@ -34,7 +34,7 @@
     @apply relative inline-block h-full w-full;
   }
   .lds-ring div {
-    @apply absolute block h-full w-full rounded-full border-4 border-transparent border-t-blue-500 dark:border-t-slate-500;
+    @apply absolute block h-full w-full rounded-full border-4 border-transparent border-t-blue-500 neon:border-t-neonf-400 dark:border-t-slate-500;
     animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   }
   .lds-ring div:nth-child(1) {
@@ -64,7 +64,10 @@
   }
 
   button.action-button {
-    @apply inline-flex items-center justify-center space-x-1 rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+    @apply inline-flex items-center justify-center space-x-1 rounded-md border border-transparent
+    bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm
+    hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+    neon:bg-neonb-300 neon:text-neonf-100 neon:hover:bg-neonb-500 neon:hover:drop-shadow-neon-md neon:focus:ring-neonf-100;
   }
 
   button.spoiler-button {

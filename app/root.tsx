@@ -5,20 +5,17 @@ import {
   Meta,
   Outlet,
   Scripts,
-  useActionData,
   useLoaderData,
-  Form,
-  redirect,
 } from 'remix'
 import type { MetaFunction, LoaderFunction, ActionFunction } from 'remix'
 import { useRef, useEffect, useState } from 'react'
 import { fetchBoards } from './api'
-import { darkMode } from './cookies/darkMode'
+import { settings } from './cookies/settings'
 import { user } from './cookies/user'
 import { AppContext } from './context/AppContext'
-import { Board, UserData } from '~/types'
+import { Board, UserData, Settings } from '~/types'
 import Header from '~/components/Header'
-import CurrentUser from '~/components/CurrentUser'
+import SettingsMenu from './components/SettingsMenu'
 
 import styles from './tailwind.css'
 
@@ -31,108 +28,54 @@ export const meta: MetaFunction = () => {
 }
 
 type LoaderData = {
-  darkMode: boolean | undefined
   data: { boards: Board[]; pms?: number }
   userData: undefined | UserData
+  settings: Settings
 }
 
 export const loader: LoaderFunction = async (context): Promise<LoaderData> => {
   const cookieHeader = context.request.headers.get('Cookie')
-  const darkModeCookie = (await darkMode.parse(cookieHeader)) || {}
-  darkModeCookie.darkMode !== undefined
   const userData = (await user.parse(cookieHeader)) || ``
+  if (userData && userData.userid) {
+    userData.userid = parseInt(userData.userid, 10)
+  }
+  const settingsData = (await settings.parse(cookieHeader)) || {}
   const data = await fetchBoards(context)
 
   return {
-    darkMode:
-      darkModeCookie?.darkMode !== undefined
-        ? darkModeCookie.darkMode
-        : undefined,
     data,
     userData,
+    settings: settingsData,
   }
-}
-
-export async function action({ request }: { request: Request }) {
-  const form = await request.formData()
-  const cookieHeader = request.headers.get('Cookie')
-  switch (form.get(`_action`)) {
-    case 'login':
-      const formData = [
-        `nick=${encodeURIComponent(form.get('nick') as string)}`,
-        `pass=${encodeURIComponent(form.get('pass') as string)}`,
-        `mode=login`,
-        `brdid=`,
-      ]
-
-      const response = await fetch(
-        `https://maniac-forum.de/forum/pxmboard.php`,
-        {
-          method: 'post',
-          headers: { 'Content-type': `application/x-www-form-urlencoded` },
-          body: formData.join(`&`),
-        }
-      )
-      const headers = response.headers
-      const data = await response.text()
-
-      const match = data.match(
-        /<div>id: (\d+)<\/div>\s+<div>nickname: (.*)<\/div>/m
-      )
-      if (match) {
-        const userid = match[1]
-        const username = match[2]
-        const cookie = headers.get('set-cookie')
-
-        const currentUser = { userid, username, cookie }
-
-        return redirect(`/`, {
-          headers: {
-            'Content-Type': 'application/json',
-            'Set-Cookie': await user.serialize({ userid, username, cookie }),
-          },
-        })
-      } else {
-        const match = data.match(/fehler \d+: (.*)<\/td>/m)
-        return { error: match ? match[1] : `Unbekannter Fehler beim Login` }
-      }
-      break
-    case 'logout':
-      return redirect(`/`, {
-        headers: {
-          'Set-Cookie': await user.serialize(``, {
-            expires: new Date(1970, 1, 1),
-          }),
-        },
-      })
-  }
-  return null
 }
 
 export default function App() {
   const body = useRef<HTMLBodyElement>(null)
-  const { darkMode, data, userData } = useLoaderData<LoaderData>()
-  const actionData = useActionData()
-  const [useDarkMode, setUseDarkMode] = useState<boolean>(
-    darkMode !== undefined ? darkMode : false
-  )
+  const { settings, data, userData } = useLoaderData<LoaderData>()
   const [currentUser, setCurrentUser] = useState<undefined | UserData>(userData)
-  const [isMenuOpen, setMenuOpen] = useState<boolean>(true)
+  const [isMenuOpen, setMenuOpen] = useState<boolean>(false)
 
   useEffect(() => {
     setCurrentUser(userData)
   }, [userData])
 
   useEffect(() => {
-    if (darkMode === undefined) {
-      setUseDarkMode(window.matchMedia('(prefers-color-scheme: dark)').matches)
+    if (settings.theme === undefined) {
+      settings.theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light'
     }
-    if (useDarkMode) {
+
+    if (settings.theme === 'dark') {
+      body.current?.classList.remove('neon')
       body.current?.classList.add('dark')
-    } else {
+    } else if (settings.theme === 'light') {
+      body.current?.classList.remove('dark', 'neon')
+    } else if (settings.theme === 'neon') {
       body.current?.classList.remove('dark')
+      body.current?.classList.add('neon')
     }
-  }, [body.current])
+  }, [body.current, settings])
 
   return (
     <html lang="en">
@@ -145,20 +88,22 @@ export default function App() {
       <body
         ref={body}
         className={`relative antialiased ${
-          useDarkMode
+          settings.theme === `dark`
             ? `dark bg-slate-900 text-gray-100`
-            : `bg-gray-50/50 text-slate-900`
+            : settings.theme === `neon`
+            ? `neon bg-neonb-900 text-neonf-100`
+            : `bg-gray-50 text-slate-900`
         }`}
       >
         <AppContext.Provider
           value={{
-            darkMode: useDarkMode,
-            setUseDarkMode,
+            // darkMode: useDarkMode,
             isMenuOpen,
             setMenuOpen,
             currentUser,
             setCurrentUser,
             pms: data.pms,
+            settings,
           }}
         >
           <div className="flex h-screen w-screen flex-col">
@@ -167,75 +112,8 @@ export default function App() {
             </div>
 
             <div className="relative h-full flex-grow overflow-hidden">
+              <SettingsMenu />
               <Outlet />
-              <div
-                className={`absolute inset-0 transform-gpu bg-gray-50/50 filter backdrop-blur-sm transition-all duration-200 dark:bg-slate-900/50 ${
-                  isMenuOpen
-                    ? `z-20 scale-100 opacity-100`
-                    : `scale-80 -z-10 opacity-0`
-                }`}
-              >
-                <div className="flex h-full w-full items-start justify-end">
-                  <div className="w-3/4 max-w-xs border border-slate-900 bg-gray-50/50 p-2 shadow-md dark:border-gray-100 dark:bg-slate-900 md:p-4 lg:max-w-md">
-                    {currentUser ? (
-                      <CurrentUser user={currentUser} />
-                    ) : (
-                      <div>
-                        <p className="font-medium">
-                          Du bist nicht eingeloggt. Bestimmte Features (posten,
-                          antworten, PMs) stehen nur für eingeloggte User zur
-                          Verfügung.
-                        </p>
-                        {actionData && actionData.error ? (
-                          <div className="mt-4 font-medium text-red-600 dark:text-red-400">
-                            {actionData.error}
-                          </div>
-                        ) : null}
-                        <Form method="post" replace className="mt-4">
-                          <input type="hidden" name="_action" value="login" />
-                          <div className="">
-                            <label
-                              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                              htmlFor="nick"
-                            >
-                              Nickname
-                            </label>
-                            <input
-                              type="text"
-                              name="nick"
-                              id="nick"
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:bg-slate-900 sm:text-sm"
-                              required
-                              placeholder="Nickname"
-                            />
-                          </div>
-                          <div className="mt-4">
-                            <label
-                              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                              htmlFor="pass"
-                            >
-                              Passwort
-                            </label>
-                            <input
-                              type="password"
-                              name="pass"
-                              id="pass"
-                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-600 focus:ring-blue-600 dark:bg-slate-900 sm:text-sm"
-                              required
-                              placeholder="password"
-                            />
-                          </div>
-                          <div className="mt-4 flex justify-end">
-                            <button type="submit" className="action-button">
-                              Login
-                            </button>
-                          </div>
-                        </Form>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </AppContext.Provider>
