@@ -21,7 +21,6 @@ export default function MessageDetail() {
   const [canEdit, setCanEdit] = useState<boolean>(false)
 
   const threadId = parseInt(params.threadId ?? '0')
-  console.log(`threadId im message`, threadId)
 
   const findMessageInThread = (m: ThreadMessage): ThreadMessage | undefined => {
     if (m.id === parseInt(params.messageId ?? '0')) {

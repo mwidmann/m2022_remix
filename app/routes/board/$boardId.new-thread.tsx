@@ -34,7 +34,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   })
 
   const data = await response.text()
-  console.log(data)
   let match = data.match(
     /Vielen Dank für deinen Beitrag.*pxmboard.php\?mode=message&brdid=(\d+)&msgid=(\d+)/m
   )
