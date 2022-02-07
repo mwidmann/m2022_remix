@@ -15,7 +15,7 @@ import { user } from './cookies/user'
 import { AppContext } from './context/AppContext'
 import { Board, UserData, Settings } from '~/types'
 import Header from '~/components/Header'
-import SettingsMenu from './components/SettingsMenu'
+import SettingsMenu from '~/components/SettingsMenu'
 
 import styles from './tailwind.css'
 import favicon_new from '../public/favicon_new.svg'
@@ -26,6 +26,7 @@ export const links: LinksFunction = () => {
   return [
     { rel: 'stylesheet', href: styles },
     { rel: 'icon', href: favicon },
+    { rel: 'manifest', href: `/manifest.json`, crossOrigin: `use-credentials` },
   ]
 }
 

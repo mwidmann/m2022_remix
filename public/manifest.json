@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "name": "Maniac-Forum",
+  "short_name": "M!Forum",
+  "start_url": ".",
+  "background_color": "#f1f4f5",
+  "display": "standalone",
+  "description": "Responsive Ansicht von maniac-forum.de",
+  "icons": [{
+    "src": "app/homescreen48.png",
+    "sizes": "48x48",
+    "type": "image/png"
+  },
+  {
+    "src": "app/homescreen72.png",
+    "sizes": "72x72",
+    "type": "image/png"
+  },
+  {
+    "src": "app/homescreen96.png",
+    "sizes": "96x96",
+    "type": "image/png"
+  },
+  {
+    "src": "app/homescreen144.png",
+    "sizes": "144x144",
+    "type": "image/png"
+  },
+  {
+    "src": "app/homescreen168.png",
+    "sizes": "168x168",
+    "type": "image/png"
+  },
+  {
+    "src": "app/homescreen192.png",
+    "sizes": "192x192",
+    "type": "image/png"
+  }]
+}
