@@ -61,6 +61,7 @@ export default function App() {
   const { settings, data, userData } = useLoaderData<LoaderData>()
   const [currentUser, setCurrentUser] = useState<undefined | UserData>(userData)
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false)
+  const [defaultTheme, setDefaultTheme] = useState<'dark' | 'light'>('dark')
 
   useEffect(() => {
     setCurrentUser(userData)
@@ -68,19 +69,11 @@ export default function App() {
 
   useEffect(() => {
     if (settings.theme === undefined) {
-      settings.theme = window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light'
-    }
-
-    if (settings.theme === 'dark') {
-      body.current?.classList.remove('neon')
-      body.current?.classList.add('dark')
-    } else if (settings.theme === 'light') {
-      body.current?.classList.remove('dark', 'neon')
-    } else if (settings.theme === 'neon') {
-      body.current?.classList.remove('dark')
-      body.current?.classList.add('neon')
+      setDefaultTheme(
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
+      )
     }
   }, [body.current, settings])
 
@@ -95,7 +88,8 @@ export default function App() {
       <body
         ref={body}
         className={`relative antialiased ${
-          settings.theme === `dark`
+          settings.theme === `dark` ||
+          (settings.theme === undefined && defaultTheme === `dark`)
             ? `dark bg-slate-900 text-gray-100`
             : settings.theme === `neon`
             ? `neon bg-neonb-900 text-neonf-100`
@@ -104,7 +98,6 @@ export default function App() {
       >
         <AppContext.Provider
           value={{
-            // darkMode: useDarkMode,
             isMenuOpen,
             setMenuOpen,
             currentUser,
