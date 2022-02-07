@@ -190,7 +190,7 @@ export default function SettingsMenu() {
     >
       <div className="flex h-full w-full items-start justify-end">
         <div
-          className="w-3/4 max-w-xs border border-slate-900 bg-gray-50 shadow-md neon:border-neonf-100 neon:bg-neonb-700 dark:border-gray-100 dark:bg-slate-900 md:p-4 lg:max-w-md"
+          className="max-h-[70vh] w-3/4 max-w-xs overflow-y-auto overflow-x-hidden border border-slate-900 bg-gray-50 shadow-md neon:border-neonf-100 neon:bg-neonb-700 dark:border-gray-100 dark:bg-slate-900 md:p-4 lg:max-w-md"
           ref={menuRef}
         >
           <div className="border-b p-2">

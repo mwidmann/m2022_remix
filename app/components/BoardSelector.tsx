@@ -77,7 +77,7 @@ export default function BoardSelector({
               </div>
 
               {board.id === currentBoard ? (
-                <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 dark:text-indigo-300 lg:hidden">
+                <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 neon:text-neonf-100 dark:text-indigo-300 lg:hidden">
                   <svg
                     className="h-5 w-5"
                     xmlns="http://www.w3.org/2000/svg"
