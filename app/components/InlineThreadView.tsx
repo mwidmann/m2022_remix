@@ -15,8 +15,13 @@ export default function InlineThreadView({ params, settings, thread }: Props) {
     listRef.current?.scrollTo(0, 0)
   }, [params.threadId])
 
+  const scrollIntoView = (element: HTMLDivElement) => {
+    const currentElementTop = element.offsetTop
+    listRef.current!.scrollTo(0, currentElementTop - 20)
+  }
+
   return (
-    <div className="h-full overflow-hidden">
+    <div className="h-full w-full overflow-hidden">
       <div
         className="
         h-full
@@ -25,7 +30,12 @@ export default function InlineThreadView({ params, settings, thread }: Props) {
       "
         ref={listRef}
       >
-        {thread ? <InlineSingleMessage message={thread} /> : null}
+        {thread ? (
+          <InlineSingleMessage
+            message={thread}
+            scrollIntoView={scrollIntoView}
+          />
+        ) : null}
       </div>
     </div>
   )

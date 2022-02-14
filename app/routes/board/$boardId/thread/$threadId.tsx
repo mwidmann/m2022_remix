@@ -87,7 +87,7 @@ export default function MessagesList() {
     <div
       ref={ref}
       className="
-        absolute inset-0 z-10 order-2 flex w-full flex-grow select-none flex-col bg-white drop-shadow-lg transition-transform duration-300         neon:bg-neonb-900 dark:bg-slate-900
+        absolute inset-0 z-10 order-2 flex w-full flex-grow select-none flex-col bg-white drop-shadow-lg transition-transform duration-300 neon:bg-neonb-900 dark:bg-slate-900
         dark:drop-shadow-dark
         md:relative
         xl:flex-row

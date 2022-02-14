@@ -31,26 +31,26 @@ export default function PostMessage({
   return (
     <div className="h-full rounded-lg border border-gray-500 dark:border-gray-300">
       {!actionData || actionData.success === false ? (
-        <Form method="post" className="flex h-full flex-col py-2">
-          <div className="shrink-0">
+        <Form method="post" className="flex h-full min-h-[50vh] flex-col py-2">
+          <div className="shrink-0 grow-0">
             <input
               type="text"
               name="title"
               placeholder="Titel"
               defaultValue={title}
-              className="w-full border-0 bg-transparent text-xl"
+              className=" w-full border-0 bg-transparent text-xl"
               maxLength={56}
             />
           </div>
-          <div className="grow-1 h-full">
+          <div className="relative h-full grow">
             <textarea
               name="body"
               placeholder="Deine Nachricht..."
               defaultValue={body}
-              className="h-full w-full border-0 bg-transparent"
+              className="absolute h-full w-full border-0 bg-transparent"
             ></textarea>
           </div>
-          <div className="flex grow-0 justify-between border-t border-gray-400 p-2 dark:border-gray-500 md:p-4">
+          <div className="flex shrink grow-0 justify-between border-t border-gray-400 p-2 dark:border-gray-500 md:p-4">
             <div>
               {mode === 'reply' ? (
                 <button
