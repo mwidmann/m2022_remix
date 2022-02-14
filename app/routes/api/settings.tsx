@@ -7,8 +7,6 @@ export const action: ActionFunction = async ({ request }) => {
   const cookieHeader = request.headers.get('Cookie')
   const settingsCookie = (await settings.parse(cookieHeader)) || {}
 
-  console.log(Array.from(form.entries()), settingsCookie)
-
   switch (form.get(`_action`)) {
     case 'login':
       const formData = [

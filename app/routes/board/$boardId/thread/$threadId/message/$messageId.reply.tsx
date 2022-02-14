@@ -72,17 +72,8 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function Reply() {
-  const params = useParams()
   const data = useLoaderData()
   const actionData = useActionData()
-  const [wantsToCite, setWantsToCite] = useState<boolean>(false)
-  const [notifyByMail, setNotifyByMail] = useState<boolean>(false)
-  console.log(actionData)
-
-  const title = data.title.startsWith(`Re:`) ? data.title : `Re: ${data.title}`
-  const body = wantsToCite
-    ? `>` + data.content.trim().replace(/\n/g, '\n>').replace(/&gt;/g, '>')
-    : ``
 
   return (
     <div className="h-full overflow-hidden p-2 text-gray-900 neon:text-neonf-100 dark:text-gray-100 lg:px-4">

@@ -22,7 +22,6 @@ export const fetchMessages: LoaderFunction = async ({
   const settings: Settings = (await settingsCookie.parse(cookieHeader)) || {}
 
   const { boardId, threadId } = params
-  console.log(threadId)
   if (threadId === `undefined` || parseInt(threadId ?? '0', 10) === 0) {
     return {}
   }

@@ -1,4 +1,4 @@
-import { Link, useParams, useTransition } from 'remix'
+import { Link, Outlet, useParams, useTransition } from 'remix'
 import { ThreadMessage } from '~/types'
 import { useContext } from 'react'
 import { AppContext } from '~/context/AppContext'
@@ -15,8 +15,9 @@ export default function SingleMessage({ message }: { message: ThreadMessage }) {
   const isLoading =
     transition.state === 'loading' &&
     transition.location?.pathname?.endsWith(`message/${message.id}`)
+  const isCurrentMessage = currentMessage === message.id
   const isCurrentClass =
-    isLoading || currentMessage === message.id
+    isLoading || isCurrentMessage
       ? `bg-blue-200 dark:bg-slate-600 dark:text-gray-100 shadow-md neon:bg-neonb-500 neon:text-neonf-300`
       : ``
   const isCurrentUserClass =
