@@ -22,7 +22,7 @@ export const fetchMessages: LoaderFunction = async ({
   const settings: Settings = (await settingsCookie.parse(cookieHeader)) || {}
 
   const { boardId, threadId } = params
-  if (threadId === `undefined`) {
+  if (threadId === `undefined` || parseInt(threadId ?? '0', 10) === 0) {
     return {}
   }
   const threadResponse = await fetch(
@@ -76,7 +76,7 @@ export const fetchMessages: LoaderFunction = async ({
     null
   )
 
-  if (settings.sortOrder === SortorderModes.newest) {
+  if (threaded && settings.sortOrder === SortorderModes.newest) {
     threaded = sort(threaded!)
     threaded.children?.sort((m1, m2) => m2.tts - m1.tts)
   }

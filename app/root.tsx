@@ -15,7 +15,7 @@ import { user } from './cookies/user'
 import { AppContext } from './context/AppContext'
 import { Board, UserData, Settings } from '~/types'
 import Header from '~/components/Header'
-import SettingsMenu from './components/SettingsMenu'
+import SettingsMenu from '~/components/SettingsMenu'
 
 import styles from './tailwind.css'
 import favicon_new from '../public/favicon_new.svg'
@@ -26,6 +26,7 @@ export const links: LinksFunction = () => {
   return [
     { rel: 'stylesheet', href: styles },
     { rel: 'icon', href: favicon },
+    { rel: 'manifest', href: `/manifest.json`, crossOrigin: `use-credentials` },
   ]
 }
 
@@ -60,6 +61,7 @@ export default function App() {
   const { settings, data, userData } = useLoaderData<LoaderData>()
   const [currentUser, setCurrentUser] = useState<undefined | UserData>(userData)
   const [isMenuOpen, setMenuOpen] = useState<boolean>(false)
+  const [defaultTheme, setDefaultTheme] = useState<'dark' | 'light'>('dark')
 
   useEffect(() => {
     setCurrentUser(userData)
@@ -67,19 +69,11 @@ export default function App() {
 
   useEffect(() => {
     if (settings.theme === undefined) {
-      settings.theme = window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light'
-    }
-
-    if (settings.theme === 'dark') {
-      body.current?.classList.remove('neon')
-      body.current?.classList.add('dark')
-    } else if (settings.theme === 'light') {
-      body.current?.classList.remove('dark', 'neon')
-    } else if (settings.theme === 'neon') {
-      body.current?.classList.remove('dark')
-      body.current?.classList.add('neon')
+      setDefaultTheme(
+        window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
+      )
     }
   }, [body.current, settings])
 
@@ -94,7 +88,8 @@ export default function App() {
       <body
         ref={body}
         className={`relative antialiased ${
-          settings.theme === `dark`
+          settings.theme === `dark` ||
+          (settings.theme === undefined && defaultTheme === `dark`)
             ? `dark bg-slate-900 text-gray-100`
             : settings.theme === `neon`
             ? `neon bg-neonb-900 text-neonf-100`
@@ -103,7 +98,6 @@ export default function App() {
       >
         <AppContext.Provider
           value={{
-            // darkMode: useDarkMode,
             isMenuOpen,
             setMenuOpen,
             currentUser,
