@@ -23,7 +23,7 @@ export const fetchMessages: LoaderFunction = async ({
 
   const { boardId, threadId } = params
   console.log(threadId)
-  if (threadId === `undefined`) {
+  if (threadId === `undefined` || parseInt(threadId ?? '0', 10) === 0) {
     return {}
   }
   const threadResponse = await fetch(
@@ -77,10 +77,7 @@ export const fetchMessages: LoaderFunction = async ({
     null
   )
 
-  console.log(messages)
-  console.log(threaded)
-
-  if (settings.sortOrder === SortorderModes.newest) {
+  if (threaded && settings.sortOrder === SortorderModes.newest) {
     threaded = sort(threaded!)
     threaded.children?.sort((m1, m2) => m2.tts - m1.tts)
   }
