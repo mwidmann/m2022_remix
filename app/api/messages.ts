@@ -5,10 +5,16 @@ import { parse } from 'date-fns'
 import { settings as settingsCookie } from '~/cookies/settings'
 
 const sort = (message: ThreadMessage) => {
+  // 1. sort all children by timestamp
   message.children = message.children?.sort((m1, m2) => m2.ts - m1.ts)
+  // 2. calculate all max timestamps for the children
   message.children.forEach((m) => sort(m))
+  // 3. re-sort all children by their maximum timestamp
+  message.children = message.children?.sort((m1, m2) => m2.tts - m1.tts)
+  // 4. set the tts value on the parent element
   message.tts =
     message.children.length > 0 ? message.children[0].tts : message.ts
+  // 5. recursion aint easy.
   return message
 }
 
