@@ -105,16 +105,15 @@ export default function MessageDetail() {
       className="w-full overflow-x-hidden p-2 pb-10 md:max-w-xl lg:w-full lg:max-w-none"
       ref={messageRef}
     >
-      <div className="flex w-full items-center justify-between rounded bg-slate-100 p-2 shadow neon:bg-neonb-500 dark:bg-slate-500">
+      <div className="flex w-full items-center justify-between rounded bg-slate-100 p-2 shadow neon:bg-neonb-500 dark:bg-slate-500 maniac:bg-maniac-bg2">
         <Link
           to={`/userprofile/${authorId}`}
           className="flex items-center space-x-2 text-gray-900 no-underline neon:text-neonf-100 dark:text-gray-100"
         >
           <img
             className="h-8 w-8 overflow-hidden rounded-full bg-gray-500 object-cover ring-2 ring-gray-500 neon:animate-glow-md neon:ring-neonf-300 dark:ring-gray-300"
-            src={`https://maniac-forum.de/forum/images/profile/${
-              authorId - (authorId % 100)
-            }/${authorId}.jpg`}
+            src={`https://maniac-forum.de/forum/images/profile/${authorId - (authorId % 100)
+              }/${authorId}.jpg`}
           />
           <div>
             <div className="font-medium">{message.author}</div>
@@ -160,7 +159,7 @@ export default function MessageDetail() {
           </button>
         </div>
       </div>
-      <div className="prose prose-sm mt-4 neon:prose-teal neon:prose-neon dark:prose-invert md:prose-base">
+      <div className="prose prose-sm mt-4 neon:prose-teal neon:prose-neon dark:prose-invert maniac:font-mono maniac:bg-maniac-bgm maniac:md:prose-sm md:prose-base">
         <h3 className="font-semibold">{message.title}</h3>
         <div
           className="mt-4"

@@ -90,7 +90,7 @@ export enum Logo {
 }
 
 export type Settings = {
-  theme?: 'dark' | 'light' | 'neon'
+  theme?: 'dark' | 'light' | 'neon' | 'maniac'
   displayMode?: DisplayModes
   sortOrder?: SortorderModes
   logo?: Logo

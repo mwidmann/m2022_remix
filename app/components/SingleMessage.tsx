@@ -33,14 +33,14 @@ export default function SingleMessage({ message }: { message: ThreadMessage }) {
       >
         <Link
           to={`message/${message.id}`}
-          className={`block border-l-4 py-2 pr-2 visited:text-slate-400 neon:visited:text-neonf-400 dark:visited:text-slate-400 ${isCurrentUserClass}`}
+          className={`block border-l-4 py-2 pr-2 visited:text-slate-400 neon:visited:text-neonf-400 maniac:text-maniac-link maniac:visited:text-maniac-linkv dark:visited:text-slate-400 ${isCurrentUserClass}`}
         >
           <div style={indentation} className="flex items-start justify-between">
             <div className="overflow-hidden">
               <p className="overflow-hidden text-ellipsis whitespace-nowrap text-sm font-semibold md:text-base">
                 {message.title}
               </p>
-              <p className="text-xs text-slate-500 neon:text-neonf-900 dark:text-slate-300">
+              <p className="text-xs text-slate-500 neon:text-neonf-900 dark:text-slate-300 maniac:text-black">
                 <span className="font-sm font-semibold">{message.author}</span>{' '}
                 - {message.date}
               </p>

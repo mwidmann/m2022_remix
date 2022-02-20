@@ -18,11 +18,19 @@ module.exports = {
           300: '#72f1b8',
           400: '#46899c',
           900: '#1a4c52'
+        },
+        maniac: {
+          bg: '#f1f4f5',
+          bg2: '#abbcc0',
+          linkd: '#63728F',
+          bgm: '#e3e9ea',
+          link: '#b70000',
+          linkv: '#63728F',
         }
       },
       fontFamily: {
         sans: [
-          'Inter var',
+          // 'Inter var',
           'ui-sans-serif',
           'system-ui',
           '-apple-system',
@@ -110,6 +118,7 @@ module.exports = {
   },
 
   plugins: [require('@tailwindcss/forms'),require('@tailwindcss/typography'),plugin(function({addVariant}) {
-    addVariant('neon', '.neon &')
+    addVariant('neon', '.neon &'),
+    addVariant('maniac', '.maniac &')
   })],
 }

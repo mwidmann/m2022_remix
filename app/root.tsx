@@ -87,14 +87,15 @@ export default function App() {
       </head>
       <body
         ref={body}
-        className={`relative antialiased ${
-          settings.theme === `dark` ||
+        className={`relative antialiased ${settings.theme === `dark` ||
           (settings.theme === undefined && defaultTheme === `dark`)
-            ? `dark bg-slate-900 text-gray-100`
-            : settings.theme === `neon`
+          ? `dark bg-slate-900 text-gray-100`
+          : settings.theme === `neon`
             ? `neon bg-neonb-900 text-neonf-100`
-            : `bg-gray-50 text-slate-900`
-        }`}
+            : settings.theme === `maniac` ?
+              `maniac bg-maniac-bg text-black`
+              : `bg-gray-50 text-slate-900`
+          }`}
       >
         <AppContext.Provider
           value={{

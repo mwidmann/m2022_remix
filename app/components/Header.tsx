@@ -13,9 +13,9 @@ export default function Header({ boards }: { boards: Board[] }) {
   const isLoading = transition.state === 'loading'
 
   return (
-    <div className="relative z-20 flex items-center justify-between border-b border-white bg-slate-900 px-2 py-2 drop-shadow-lg neon:bg-neonb-900 dark:drop-shadow-dark md:px-4">
+    <div className="relative z-20 flex items-center justify-between border-b border-white bg-slate-900 px-2 py-2 drop-shadow-lg neon:bg-neonb-900 maniac:bg-maniac-bg2 dark:drop-shadow-dark md:px-4">
       <div className="flex flex-grow items-center">
-        <div className="flex items-center text-gray-100 neon:animate-glow-md neon:text-neonf-100">
+        <div className="flex items-center text-gray-100 neon:animate-glow-md neon:text-neonf-100 maniac:text-maniac-link">
           {settings.logo === Logo.old ? (
             <svg
               viewBox="0 0 280 280"
@@ -53,7 +53,7 @@ export default function Header({ boards }: { boards: Board[] }) {
           <div className="ml-4 h-5 w-5">{isLoading ? <Spinner /> : null}</div>
         </div>
       </div>
-      <div className="relative flex items-center space-x-2 text-gray-100 neon:text-neonf-100">
+      <div className="relative flex items-center space-x-2 text-gray-100 neon:text-neonf-100 maniac:text-maniac-link">
         {currentUser && threadId === undefined ? (
           <Link
             to={`/board/${boardId}/new-thread`}
@@ -93,11 +93,10 @@ export default function Header({ boards }: { boards: Board[] }) {
               />
             </svg>
             <div
-              className={`absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-xs font-bold text-white shadow ${
-                pms && pms > 0
-                  ? `bg-green-600 neon:animate-glow-md`
-                  : `bg-slate-600`
-              }`}
+              className={`absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-xs font-bold text-white shadow ${pms && pms > 0
+                ? `bg-green-600 neon:animate-glow-md`
+                : `bg-slate-600`
+                }`}
             >
               {pms}
             </div>
