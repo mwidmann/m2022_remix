@@ -1,4 +1,4 @@
-import { Form, Link, useParams } from 'remix'
+import { Form, Link, useParams } from "@remix-run/react";
 import { Switch } from '@headlessui/react'
 
 import { useState } from 'react'

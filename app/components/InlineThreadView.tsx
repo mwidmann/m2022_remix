@@ -1,7 +1,6 @@
-import { Outlet } from 'remix'
 import { useRef, useEffect } from 'react'
 import { Params } from 'react-router'
-import { Settings, Logo, ThreadMessage } from '~/types'
+import { Settings, ThreadMessage } from '~/types'
 import InlineSingleMessage from './InlineSingleMessage'
 
 type Props = {

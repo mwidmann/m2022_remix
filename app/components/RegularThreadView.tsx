@@ -1,4 +1,4 @@
-import { Outlet } from 'remix'
+import { Outlet } from "@remix-run/react";
 import { useRef, useEffect } from 'react'
 import { Params } from 'react-router'
 import { Settings, Logo, ThreadMessage } from '~/types'

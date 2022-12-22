@@ -1,6 +1,5 @@
-import { useFetcher } from 'remix'
-import { settings } from '~/cookies/settings'
-import { SettingsItem, DisplayModes, SortorderModes } from '~/types'
+import { useFetcher } from '@remix-run/react'
+import { SettingsItem } from '~/types'
 
 export default function SettingsToggle({ setting }: { setting: SettingsItem }) {
   const fetcher = useFetcher()

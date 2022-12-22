@@ -1,4 +1,4 @@
-import { Link, Outlet, useParams, useTransition } from 'remix'
+import { Link, useParams, useTransition } from '@remix-run/react'
 import { ThreadMessage } from '~/types'
 import { useContext } from 'react'
 import { AppContext } from '~/context/AppContext'

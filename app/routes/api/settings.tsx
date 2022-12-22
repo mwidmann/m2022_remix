@@ -1,4 +1,4 @@
-import { ActionFunction, json } from 'remix'
+import { type ActionFunction, json } from '@remix-run/node'
 import { user } from '~/cookies/user'
 import { settings } from '~/cookies/settings'
 

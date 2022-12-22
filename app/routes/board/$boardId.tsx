@@ -1,5 +1,10 @@
-import { LoaderFunction, Outlet, useOutletContext, useParams } from 'remix'
-import { useLoaderData } from 'remix'
+import {
+  useLoaderData,
+  Outlet,
+  useOutletContext,
+  useParams,
+} from '@remix-run/react'
+import { LoaderFunction } from '@remix-run/node'
 import { useLocalStorage } from '~/hooks/useLocalStorage'
 import ThreadList from '~/components/ThreadList'
 import { Thread } from '~/types'

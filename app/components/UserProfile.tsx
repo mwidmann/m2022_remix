@@ -1,5 +1,3 @@
-import { UserData } from '~/types'
-
 export default function UserProfile({
   userProfile,
 }: {

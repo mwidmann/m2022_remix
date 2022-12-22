@@ -1,4 +1,5 @@
-import { useActionData, ActionFunction } from 'remix'
+import { useActionData } from '@remix-run/react'
+import { ActionFunction } from '@remix-run/node'
 import PostMessage from '~/components/PostMessage'
 import { user } from '~/cookies/user'
 

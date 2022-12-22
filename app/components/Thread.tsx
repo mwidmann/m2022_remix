@@ -1,4 +1,4 @@
-import { Link, useTransition } from 'remix'
+import { Link, useTransition } from "@remix-run/react";
 import { Thread } from '~/types'
 import ThreadCount from './ThreadCount'
 
