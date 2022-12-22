@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio'
-import type { LoaderFunction } from 'remix'
+import { type LoaderFunction } from "@remix-run/node";
 import { Message, PlainMessage } from '~/types'
 
 type MessageInfo = {
