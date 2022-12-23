@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio'
-import { LoaderFunction } from 'remix'
+import type { LoaderFunction } from '@remix-run/node'
 import { UserProfile } from '~/types'
 
 export const fetchUserProfileById = async (

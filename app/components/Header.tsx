@@ -1,5 +1,5 @@
 import { Board, Logo } from '~/types'
-import { useParams, useTransition, Link } from 'remix'
+import { Link, useParams, useTransition } from "@remix-run/react";
 import { useContext } from 'react'
 import BoardSelector from './BoardSelector'
 import Spinner from './Spinner'

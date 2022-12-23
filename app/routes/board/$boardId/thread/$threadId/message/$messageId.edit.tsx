@@ -1,12 +1,5 @@
-import {
-  ActionFunction,
-  Form,
-  Link,
-  LoaderFunction,
-  useActionData,
-  useLoaderData,
-  useParams,
-} from 'remix'
+import { useActionData, useLoaderData } from '@remix-run/react'
+import { ActionFunction, LoaderFunction } from '@remix-run/node'
 import { useState } from 'react'
 import { user } from '~/cookies/user'
 import { fetchMessagePlain } from '~/api'

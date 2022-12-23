@@ -1,14 +1,8 @@
 import { AppContext } from '~/context/AppContext'
 import { useContext, useState, useEffect, useRef } from 'react'
 import { Switch } from '@headlessui/react'
-import {
-  Form,
-  useSubmit,
-  redirect,
-  useLoaderData,
-  useActionData,
-  LoaderFunction,
-} from 'remix'
+import { Form, useSubmit, useLoaderData, useActionData } from '@remix-run/react'
+import { redirect, LoaderFunction } from '@remix-run/node'
 import { darkMode } from '~/cookies/darkMode'
 import { user } from '~/cookies/user'
 import CurrentUser from '~/components/CurrentUser'

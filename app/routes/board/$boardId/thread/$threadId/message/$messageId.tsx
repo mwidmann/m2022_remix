@@ -1,5 +1,11 @@
-import { Link, LoaderFunction, useMatches } from 'remix'
-import { useLoaderData, useParams, useNavigate } from 'remix'
+import { LoaderFunction } from '@remix-run/node'
+import {
+  Link,
+  useLoaderData,
+  useParams,
+  useNavigate,
+  useMatches,
+} from '@remix-run/react'
 import { Message, Thread, ThreadMessage } from '~/types'
 import { useEffect, useRef, useContext, useState } from 'react'
 import { fetchMessage } from '~/api'

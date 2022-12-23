@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio'
-import type { LoaderFunction } from 'remix'
+import { type LoaderFunction } from "@remix-run/node";
 import { Settings, ThreadMessage, SortorderModes } from '~/types'
 import { parse } from 'date-fns'
 import { settings as settingsCookie } from '~/cookies/settings'

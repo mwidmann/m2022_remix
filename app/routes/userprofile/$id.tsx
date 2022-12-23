@@ -1,4 +1,5 @@
-import { LoaderFunction, useLoaderData } from 'remix'
+import { useLoaderData } from '@remix-run/react'
+import { LoaderFunction } from '@remix-run/node'
 import UserProfile from '~/components/UserProfile'
 import * as cheerio from 'cheerio'
 import { fetchUserProfile } from '~/api'

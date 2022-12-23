@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'remix'
+import { Link } from "@remix-run/react";
 import { Board } from '~/types'
 
 export default function BoardSelector({

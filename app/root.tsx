@@ -1,13 +1,5 @@
-import {
-  Links,
-  LiveReload,
-  ScrollRestoration,
-  Meta,
-  Outlet,
-  Scripts,
-  useLoaderData,
-} from 'remix'
-import type { MetaFunction, LoaderFunction, LinksFunction } from 'remix'
+import { type LinksFunction, type LoaderFunction, type MetaFunction } from "@remix-run/node";
+import { Links, LiveReload, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "@remix-run/react";
 import { useRef, useEffect, useState } from 'react'
 import { fetchBoards } from './api'
 import { settings } from './cookies/settings'

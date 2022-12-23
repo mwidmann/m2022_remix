@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio'
-import type { LoaderFunction } from 'remix'
+import { type LoaderFunction } from "@remix-run/node";
 import { user } from '~/cookies/user'
 import { Board, BoardsResponse } from '~/types'
 

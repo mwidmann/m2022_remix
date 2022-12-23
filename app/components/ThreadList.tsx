@@ -1,6 +1,6 @@
 import { Thread } from '~/types'
 import SingleThread from '~/components/Thread'
-import { useParams } from 'remix'
+import { useParams } from "@remix-run/react";
 
 export default function ThreadList({
   threads,

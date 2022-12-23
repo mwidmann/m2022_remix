@@ -1,13 +1,12 @@
 import {
-  LoaderFunction,
   useLoaderData,
   useParams,
   useTransition,
   useMatches,
-} from 'remix'
-import { ThreadMessage, Thread, Logo, DisplayModes } from '~/types'
-import SingleMessage from '~/components/SingleMessage'
+} from '@remix-run/react'
+import { LoaderFunction } from '@remix-run/node'
 import { useEffect, useRef } from 'react'
+import { ThreadMessage, Thread, Logo, DisplayModes } from '~/types'
 import { fetchMessages } from '~/api'
 import { useThreadMessageCount } from '~/routes/board/$boardId'
 import { useContext } from 'react'
