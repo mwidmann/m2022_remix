@@ -1,16 +1,16 @@
 import { Board, Logo } from '~/types'
-import { Link, useParams, useTransition } from "@remix-run/react";
+import { Link, useParams, useNavigation } from "@remix-run/react";
 import { useContext } from 'react'
 import BoardSelector from './BoardSelector'
 import Spinner from './Spinner'
 import { AppContext } from '~/context/AppContext'
 
 export default function Header({ boards }: { boards: Board[] }) {
-  const transition = useTransition()
+  const navigation = useNavigation()
   const { isMenuOpen, setMenuOpen, pms, currentUser, settings } =
     useContext(AppContext)
   const { boardId, threadId } = useParams()
-  const isLoading = transition.state === 'loading'
+  const isLoading = navigation.state === 'loading'
 
   return (
     <div className="relative z-20 flex items-center justify-between border-b border-white bg-slate-900 px-2 py-2 drop-shadow-lg neon:bg-neonb-900 dark:drop-shadow-dark md:px-4">

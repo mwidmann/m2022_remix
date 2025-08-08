@@ -14,7 +14,8 @@ import { AppContext } from '~/context/AppContext'
 export const loader: LoaderFunction = async (
   context
 ): Promise<Message | Response> => {
-  return await fetchMessage(context)
+  const result = await fetchMessage(context)
+  return (result as Message) || {} as Message
 }
 
 export default function MessageDetail() {
@@ -57,8 +58,8 @@ export default function MessageDetail() {
       const threadMatch = matches.find(
         (m) => m.id === 'routes/board/$boardId/thread/$threadId'
       )
-      if (threadMatch && threadMatch.data) {
-        const m = findMessageInThread(threadMatch.data.thread as ThreadMessage)
+      if (threadMatch && threadMatch.data && (threadMatch.data as any).thread) {
+        const m = findMessageInThread((threadMatch.data as any).thread as ThreadMessage)
         if (m?.children.length === 0) {
           setCanEdit(true)
         }

@@ -1,4 +1,4 @@
-import { Link, Outlet, useParams, useTransition } from "@remix-run/react";
+import { Link, Outlet, useParams, useNavigation } from "@remix-run/react";
 import { ThreadMessage } from '~/types'
 import { useContext, useEffect, useRef } from 'react'
 import { AppContext } from '~/context/AppContext'
@@ -11,7 +11,7 @@ export default function InlineSingleMessage({
   scrollIntoView: (element: HTMLDivElement) => void
 }) {
   const context = useContext(AppContext)
-  const transition = useTransition()
+  const navigation = useNavigation()
   const { messageId } = useParams()
   const indentation = {
     marginLeft: `${message.hierarchy - 1 + 0.5}rem`,
@@ -20,8 +20,8 @@ export default function InlineSingleMessage({
 
   const currentMessage = parseInt(messageId ?? '0')
   const isLoading =
-    transition.state === 'loading' &&
-    transition.location?.pathname?.endsWith(`message/${message.id}`)
+    navigation.state === 'loading' &&
+    navigation.location?.pathname?.endsWith(`message/${message.id}`)
   const isCurrentMessage = currentMessage === message.id
 
   const isCurrentClass =

@@ -75,6 +75,9 @@ Wie schon beim [alten Client](https://widmann.maniac-forum.de/), den ich nach ei
   - About-Seite wurde eingefügt
   - Bugfixes
 
+- 0.5.0: Refactoring (08.08.2025)
+  - Update auf Remix v2.17.0
+
 ## Benutzte Open Source Projekte
 
 Dieses Projekt verwendet eine Reihe von Open Source Projekten:

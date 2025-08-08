@@ -9,6 +9,15 @@ import CurrentUser from '~/components/CurrentUser'
 import { fetchUserProfileById } from '~/api'
 import { UserProfile } from '~/types'
 
+type LoaderData = {
+  userData: any;
+  userProfile: any;
+}
+
+type ActionData = {
+  error?: string;
+} | undefined;
+
 export async function action({ request }: { request: Request }) {
   const form = await request.formData()
   const cookieHeader = request.headers.get('Cookie')
@@ -92,16 +101,17 @@ export default function SettingsIndex() {
   const context = useContext(AppContext)
   const submit = useSubmit()
   const [enabled, setEnabled] = useState<boolean>(false)
-  const { userData, userProfile } = useLoaderData()
-  const actionData = useActionData()
+  const { userData, userProfile } = useLoaderData<LoaderData>()
+  const actionData = useActionData<ActionData>()
   useEffect(() => {
-    setEnabled(context.darkMode)
+    // Set dark mode from settings instead of context
+    setEnabled(context.settings.theme === 'dark')
     context.setCurrentUser(userData)
   }, [context])
 
   const toggleDarkMode = () => {
     setEnabled(!enabled)
-    context.setUseDarkMode(!enabled)
+    // Remove context.setUseDarkMode as it doesn't exist in AppState
     submit(darkModeForm.current, { replace: true })
   }
 
