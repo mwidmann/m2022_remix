@@ -1,5 +1,5 @@
 /**
- * @type {import('@remix-run/dev/config').AppConfig}
+ * @type {import('@remix-run/dev').AppConfig}
  */
 module.exports = {
   appDirectory: 'app',
@@ -7,4 +7,11 @@ module.exports = {
   publicPath: '/build/',
   serverBuildDirectory: 'api/_build',
   ignoredRouteFiles: ['.*'],
+  future: {
+    v3_fetcherPersist: true,
+    v3_relativeSplatPath: true,
+    v3_throwAbortReason: true,
+    v3_lazyRouteDiscovery: true,
+    v3_singleFetch: true,
+  },
 }

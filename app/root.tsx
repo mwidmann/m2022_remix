@@ -23,7 +23,9 @@ export const links: LinksFunction = () => {
 }
 
 export const meta: MetaFunction = () => {
-  return { title: 'm!2022' }
+  return [
+    { title: 'm!2022' },
+  ]
 }
 
 type LoaderData = {
@@ -42,7 +44,7 @@ export const loader: LoaderFunction = async (context): Promise<LoaderData> => {
   const data = await fetchBoards(context)
 
   return {
-    data,
+    data: (data as { boards: Board[]; pms?: number }) || { boards: [] as Board[], pms: 0 },
     userData,
     settings: settingsData,
   }

@@ -4,15 +4,18 @@ import UserProfile from '~/components/UserProfile'
 import * as cheerio from 'cheerio'
 import { fetchUserProfile } from '~/api'
 
-export const loader: LoaderFunction = async (args) => {
-  return await fetchUserProfile(args)
+type LoaderData = { [key: string]: string } | null;
+
+export const loader: LoaderFunction = async (args): Promise<LoaderData> => {
+  const result = await fetchUserProfile(args)
+  return result || {}
 }
 
 export default function UserProfilePage() {
-  const userData = useLoaderData()
+  const userData = useLoaderData<LoaderData>()
   return (
     <div className="h-full overflow-hidden overflow-y-auto p-2 lg:px-4">
-      <UserProfile userProfile={userData} />
+      <UserProfile userProfile={userData || {}} />
     </div>
   )
 }

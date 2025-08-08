@@ -1,4 +1,4 @@
-import { Link, useTransition } from "@remix-run/react";
+import { Link, useNavigation } from "@remix-run/react";
 import { Thread } from '~/types'
 import ThreadCount from './ThreadCount'
 
@@ -11,10 +11,10 @@ export default function SingleThread({
   hasNewMessages: boolean
   currentThread: number
 }) {
-  const transition = useTransition()
+  const navigation = useNavigation()
   const isLoading =
-    transition.state === 'loading' &&
-    transition.location?.pathname?.endsWith(`thread/${thread.id}`)
+    navigation.state === 'loading' &&
+    navigation.location?.pathname?.endsWith(`thread/${thread.id}`)
   const isCurrentClass =
     isLoading || currentThread === thread.id
       ? `bg-blue-200 dark:bg-slate-600 dark:text-gray-100 shadow-md neon:bg-neonb-500 neon:text-neonf-300`

@@ -14,7 +14,8 @@ import { useEffect, useRef } from 'react'
 export const loader: LoaderFunction = async (
   context
 ): Promise<Thread[] | Response> => {
-  return await fetchThreads(context)
+  const result = await fetchThreads(context)
+  return (result as Thread[]) || []
 }
 
 export default function Board() {

@@ -1,14 +1,14 @@
 import {
   useLoaderData,
   useParams,
-  useTransition,
+  useNavigation,
   useMatches,
 } from '@remix-run/react'
 import { LoaderFunction } from '@remix-run/node'
 import { useEffect, useRef } from 'react'
 import { ThreadMessage, Thread, Logo, DisplayModes } from '~/types'
 import { fetchMessages } from '~/api'
-import { useThreadMessageCount } from '~/routes/board/$boardId'
+import { useThreadMessageCount } from '~/routes/board.$boardId'
 import { useContext } from 'react'
 import { AppContext } from '~/context/AppContext'
 import InlineThreadView from '~/components/InlineThreadView'
@@ -28,12 +28,13 @@ interface SwipeEvent extends Event {
 type LoaderData = { thread: ThreadMessage; count: number }
 
 export const loader: LoaderFunction = async (context): Promise<LoaderData> => {
-  return await fetchMessages(context)
+  const result = await fetchMessages(context)
+  return (result as LoaderData) || { thread: {} as ThreadMessage, count: 0 }
 }
 
 export default function MessagesList() {
   const params = useParams()
-  const transition = useTransition()
+  const navigation = useNavigation()
   const matches = useMatches()
 
   const { thread, count } = useLoaderData<LoaderData>()
@@ -65,7 +66,7 @@ export default function MessagesList() {
 
   useEffect(() => {
     if (ref.current) ref.current.style.transform = 'translateX(0)'
-  }, [transition.state])
+  }, [navigation.state])
 
   useEffect(() => {
     const boardMatch = matches.find((m) => m.id === `routes/board/$boardId`)

@@ -1,6 +1,11 @@
 import { useFetcher } from "@remix-run/react";
+
+type ActionData = {
+  error?: string;
+} | undefined;
+
 export default function LoginForm() {
-  const fetcher = useFetcher()
+  const fetcher = useFetcher<ActionData>()
   const actionData = fetcher.data
 
   return (
